@@ -1,6 +1,8 @@
 import os
 
 import boto3
+from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 
 if os.path.isfile('.env'):
@@ -25,5 +27,7 @@ def downloader(file: str):
     my_bucket.download_file(file, f'{target_path}{os.path.sep}{filename}')
 
 
-for key in keys:
-    downloader(file=key)
+with ThreadPoolExecutor(max_workers=10) as executor:
+    list(tqdm(iterable=executor.map(downloader, keys),
+              total=len(keys), desc=f'Downloading files from {TARGET}',
+              unit='files', leave=True))

@@ -1,6 +1,19 @@
 Change Log
 ==========
 
+0.0.4 (04/17/2022)
+------------------
+- Implement multi-threading for performance
+
+0.0.3 (04/17/2022)
+------------------
+- Base script to download s3 objects
+
+0.0.2 (04/17/2022)
+------------------
+- Setup pypi package and sphinx docs
+- Add all requirements
+
 0.0.1 (04/17/2022)
 ------------------
 - Initial commit
