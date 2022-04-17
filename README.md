@@ -33,12 +33,23 @@ Python module to download all the objects in an S3 bucket.
 
 ### Usage
 
+#### Environment Variables
+
+Environment variables can optionally be loaded from a `.env` file.
+<br>
+These env vars may also be passed as arguments during object instantiation.
+
+- `AWS_DEFAULT_REGION`
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+
 ##### Using multi-threading
 ```python
 from s3.dumper import Downloader
 
 if __name__ == '__main__':
-    Downloader(bucket_name='MY_BUCKET_NAME').run_in_parallel()
+    wrapper = Downloader(bucket_name='BUCKET_NAME')
+    wrapper.run_in_parallel(threads=10)  # Defaults to 5
 ```
 
 ##### Without using multi-threading
@@ -46,7 +57,8 @@ if __name__ == '__main__':
 from s3.dumper import Downloader
 
 if __name__ == '__main__':
-    Downloader(bucket_name='MY_BUCKET_NAME').run()
+    wrapper = Downloader(bucket_name='BUCKET_NAME')
+    wrapper.run()
 ```
 
 ### Coding Standards

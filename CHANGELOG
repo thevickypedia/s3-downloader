@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+0.0.6 (04/17/2022)
+------------------
+- Add boto3 retry logic
+- Update README.md
+
 0.0.5 (04/17/2022)
 ------------------
 - Add OOP section for easy usage

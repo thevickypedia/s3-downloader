@@ -3,6 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import List, NoReturn
 
 import boto3
+from botocore.config import Config
 from tqdm import tqdm
 
 from .exceptions import BucketNotFound
@@ -15,21 +16,30 @@ class Downloader:
 
     """
 
-    def __init__(self, bucket_name: str, download_dir: str = None, threads: int = 5,
-                 region_name: str = None, aws_access_key_id: str = None, aws_secret_access_key: str = None):
+    RETRY_CONFIG = Config(
+        retries={
+            'max_attempts': 10,
+            'mode': 'standard'
+        }
+    )
+
+    def __init__(self, bucket_name: str,
+                 download_dir: str = None,
+                 region_name: str = os.environ.get('AWS_DEFAULT_REGION'),
+                 aws_access_key_id: str = os.environ.get('AWS_ACCESS_KEY_ID'),
+                 aws_secret_access_key: str = os.environ.get('AWS_SECRET_ACCESS_KEY')):
         """Initiates all the necessary args.
 
         Args:
             bucket_name: Name of the bucket.
             download_dir: Name of the download directory. Defaults to bucket name.
-            threads: Number of threads to use for downloading using multi-threading.
             region_name: Name of the AWS region.
             aws_access_key_id: AWS access key ID.
             aws_secret_access_key: AWS secret access key.
         """
         _account_id, _alias = boto3.resource('iam').CurrentUser().arn.split('/')
-        self.s3 = boto3.resource('s3', region_name=region_name, aws_access_key_id=aws_access_key_id,
-                                 aws_secret_access_key=aws_secret_access_key)
+        self.s3 = boto3.resource(service_name='s3', region_name=region_name, aws_access_key_id=aws_access_key_id,
+                                 aws_secret_access_key=aws_secret_access_key, config=self.RETRY_CONFIG)
         for bucket_ in self.s3.buckets.all():
             if bucket_.name == bucket_name:
                 break
@@ -40,8 +50,6 @@ class Downloader:
         self.bucket_name = bucket_name
         self.download_dir = download_dir or bucket_name
         self.bucket = self.s3.Bucket(self.bucket_name)
-        self.threads = threads
-        self.stop = False
 
     def get_objects(self) -> List[str]:
         """Get all the objects in the target s3 bucket.
@@ -60,8 +68,6 @@ class Downloader:
         Args:
             file: Takes the filename as an argument.
         """
-        if self.stop:
-            return
         path, filename = os.path.split(file)
         target_path = self.download_dir + os.path.sep + path.replace(' ', '_')
         if not os.path.isdir(target_path):
@@ -71,20 +77,18 @@ class Downloader:
     def run(self) -> NoReturn:
         """Initiates bucket download in a traditional loop."""
         keys = self.get_objects()
-        try:
-            for k in tqdm(keys, total=len(keys), unit='file', leave=True,
-                          desc=f'Downloading files from {self.bucket_name}'):
-                self.downloader(file=k)
-        except KeyboardInterrupt:
-            self.stop = True
+        for k in tqdm(keys, total=len(keys), unit='file', leave=True,
+                      desc=f'Downloading files from {self.bucket_name}'):
+            self.downloader(file=k)
 
-    def run_in_parallel(self) -> NoReturn:
-        """Initiates bucket download in multi-threading."""
+    def run_in_parallel(self, threads: int = 5) -> NoReturn:
+        """Initiates bucket download in multi-threading.
+
+        Args:
+            threads: Number of threads to be spun up.
+        """
         keys = self.get_objects()
-        with ThreadPoolExecutor(max_workers=self.threads) as executor:
-            try:
-                list(tqdm(iterable=executor.map(self.downloader, keys),
-                          total=len(keys), desc=f'Downloading files from {self.bucket_name}',
-                          unit='files', leave=True))
-            except KeyboardInterrupt:
-                self.stop = True
+        with ThreadPoolExecutor(max_workers=threads) as executor:
+            list(tqdm(iterable=executor.map(self.downloader, keys),
+                      total=len(keys), desc=f'Downloading files from the bucket: {self.bucket_name}',
+                      unit='files', leave=True))
