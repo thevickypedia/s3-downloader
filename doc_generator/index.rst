@@ -8,9 +8,23 @@ Welcome to S3 Downloader's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Read Me:
 
+   README
 
+S3 Downloader
+=============
+
+.. automodule:: s3.dumper
+   :members:
+   :undoc-members:
+
+Exceptions
+==========
+
+.. automodule:: s3.exceptions
+   :members:
+   :undoc-members:
 
 Indices and tables
 ==================

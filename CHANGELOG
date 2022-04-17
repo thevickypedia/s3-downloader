@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+0.0.5 (04/17/2022)
+------------------
+- Add OOP section for easy usage
+- Update docs
+
 0.0.4 (04/17/2022)
 ------------------
 - Implement multi-threading for performance
