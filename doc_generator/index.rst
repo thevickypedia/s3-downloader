@@ -12,6 +12,13 @@ Welcome to S3 Downloader's documentation!
 
    README
 
+Display
+=======
+
+.. automodule:: s3.display
+   :members:
+   :exclude-members: BLUE, CYAN, END, GREEN, RED, YELLOW, VIOLET, LIGHT_GREEN, LIGHT_RED, LIGHT_YELLOW, BOLD, ITALIC, UNDERLINE
+
 S3 Downloader
 =============
 
