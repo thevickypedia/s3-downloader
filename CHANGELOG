@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+0.0.8 (12/06/2022)
+------------------
+- Set pypi build upon release instead of commit
+- Simplify pypi build action
+
+0.0.7 (04/23/2022)
+------------------
+- Add log messages in custom format
+
 0.0.6 (04/17/2022)
 ------------------
 - Add boto3 retry logic
