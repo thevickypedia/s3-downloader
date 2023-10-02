@@ -1,4 +1,6 @@
-.idea
-venv
+.idea/
+venv/
 _build
 .env
+*.egg-info/
+dist/

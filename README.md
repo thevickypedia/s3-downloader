@@ -12,7 +12,6 @@
 [![GitHub](https://img.shields.io/github/license/thevickypedia/s3-downloader)](https://github.com/thevickypedia/s3-downloader/blob/main/LICENSE)
 [![GitHub repo size](https://img.shields.io/github/repo-size/thevickypedia/s3-downloader)](https://api.github.com/repos/thevickypedia/s3-downloader)
 [![GitHub code size](https://img.shields.io/github/languages/code-size/thevickypedia/s3-downloader)](https://api.github.com/repos/thevickypedia/s3-downloader)
-[![LOC](https://img.shields.io/tokei/lines/github/thevickypedia/s3-downloader)](https://api.github.com/repos/thevickypedia/s3-downloader)
 
 **Activity**
 
@@ -28,36 +27,28 @@
 # S3 Download
 Python module to download all the objects in an S3 bucket.
 
-### Install from pypi
-`pip install s3-downloader`
+### Installation
+```shell
+pip install s3-downloader
+```
 
 ### Usage
 
-#### Environment Variables
-
-Environment variables can optionally be loaded from a `.env` file.
-<br>
-These env vars may also be passed as arguments during object instantiation.
-
-- `AWS_DEFAULT_REGION`
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-
-##### Using multi-threading
+##### Download objects in parallel
 ```python
-from s3.dumper import Downloader
+import s3
 
 if __name__ == '__main__':
-    wrapper = Downloader(bucket_name='BUCKET_NAME')
+    wrapper = s3.Downloader(bucket_name='BUCKET_NAME')
     wrapper.run_in_parallel(threads=10)  # Defaults to 5
 ```
 
-##### Without using multi-threading
+##### Download objects in sequence
 ```python
-from s3.dumper import Downloader
+import s3
 
 if __name__ == '__main__':
-    wrapper = Downloader(bucket_name='BUCKET_NAME')
+    wrapper = s3.Downloader(bucket_name='BUCKET_NAME')
     wrapper.run()
 ```
 
@@ -67,29 +58,13 @@ Styling conventions: [`PEP 8`](https://www.python.org/dev/peps/pep-0008/) <br>
 Clean code with pre-commit hooks: [`flake8`](https://flake8.pycqa.org/en/latest/) and 
 [`isort`](https://pycqa.github.io/isort/)
 
-### Linting
-`PreCommit` will ensure linting, and the doc creation are run on every commit.
-
-**Requirement**
-<br>
-`pip install --no-cache --upgrade sphinx pre-commit recommonmark`
-
-**Usage**
-<br>
-`pre-commit run --all-files`
-
 ### Pypi Package
 [![pypi-module](https://img.shields.io/badge/Software%20Repository-pypi-1f425f.svg)](https://packaging.python.org/tutorials/packaging-projects/)
 
 [https://pypi.org/project/s3-downloader/](https://pypi.org/project/s3-downloader/)
 
-### Runbook
-[![made-with-sphinx-doc](https://img.shields.io/badge/Code%20Docs-Sphinx-1f425f.svg)](https://www.sphinx-doc.org/en/main/man/sphinx-autogen.html)
-
-[https://thevickypedia.github.io/s3-downloader/](https://thevickypedia.github.io/s3-downloader/)
-
 ## License & copyright
 
-&copy; Vignesh Sivanandha Rao
+&copy; Vignesh Rao
 
 Licensed under the [MIT License](https://github.com/thevickypedia/s3-downloader/blob/main/LICENSE)

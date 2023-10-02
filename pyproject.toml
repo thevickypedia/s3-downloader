@@ -1,0 +1,40 @@
+[project]
+name = "s3-downloader"
+dynamic = ["version"]
+description = "Python module to download all the objects in an S3 bucket."
+readme = "README.md"
+authors = [{ name = "Vignesh Rao", email = "svignesh1793@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Internet :: File Transfer Protocol (FTP)"
+]
+dependencies = [
+    "boto3",
+    "tqdm"
+]
+keywords = ["s3"]
+requires-python = ">=3.8"
+
+[tool.setuptools]
+packages     = ["s3"]
+
+[tool.setuptools.dynamic]
+version      = {attr = "s3.version"}
+
+[build-system]
+requires      = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+dev = ["sphinx==5.1.1", "pre-commit", "recommonmark"]
+
+[project.urls]
+Homepage        = "https://github.com/thevickypedia/s3-downloader"
+Docs            = "https://thevickypedia.github.io/s3-downloader/"
+Source          = "https://github.com/thevickypedia/s3-downloader"
+"Bug Tracker"   = "https://github.com/thevickypedia/s3-downloader/issues"
