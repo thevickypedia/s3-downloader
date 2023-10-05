@@ -48,6 +48,7 @@ class Downloader:
                                      aws_access_key_id=aws_access_key_id,
                                      aws_secret_access_key=aws_secret_access_key)
         self.s3 = self.session.resource(service_name="s3", config=self.RETRY_CONFIG)
+        self.no_filename = []
         self.logger = logger
         self.download_dir = download_dir or bucket_name
         self.bucket_name = bucket_name
@@ -74,6 +75,13 @@ class Downloader:
                          self.bucket_name, os.path.abspath(self.download_dir))
         self.bucket = self.s3.Bucket(self.bucket_name)
 
+    def exit(self) -> None:
+        """Logs if there were any failures."""
+        if self.no_filename:
+            self.logger.warning("%d file(s) failed to download since no filename was specified", len(self.no_filename))
+            self.logger.warning(self.no_filename)
+            self.logger.info("This can most likely be a system generated file, review and remove it in s3 if need be.")
+
     def _get_objects(self) -> List[str]:
         """Get all the objects in the target s3 bucket.
 
@@ -95,19 +103,26 @@ class Downloader:
             file: Takes the filename as an argument.
         """
         path, filename = os.path.split(file)
+        if not filename:
+            self.no_filename.append(file)
+            return
         target_path = os.path.join(self.download_dir, path.replace(" ", "_"))
-        if not os.path.isdir(target_path):
+        try:
             os.makedirs(target_path)
+        except FileExistsError:  # Multiple threads running simultaneously can cause this
+            pass
         self.bucket.download_file(file, os.path.join(target_path, filename))
 
     def run(self) -> NoReturn:
         """Initiates bucket download in a traditional loop."""
         self.init()
         keys = self._get_objects()
+        self.logger.debug(keys)
         self.logger.info("Initiating download process.")
         for file in tqdm(keys, total=len(keys), unit="file", leave=True,
                          desc=f"Downloading files from {self.bucket_name}"):
             self._downloader(file=file)
+        self.exit()
 
     def run_in_parallel(self, threads: int = 5) -> NoReturn:
         """Initiates bucket download in multi-threading.
@@ -124,3 +139,4 @@ class Downloader:
                       total=len(keys), desc=f"Downloading files from {self.bucket_name}",
                       unit="files", leave=True))
         self.logger.info(f"Run Time: {round(float(time.perf_counter()), 2)}s")
+        self.exit()
