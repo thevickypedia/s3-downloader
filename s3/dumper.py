@@ -9,6 +9,7 @@ from botocore.config import Config
 from tqdm import tqdm
 
 from s3.logger import LOGGER
+from s3.exceptions import InvalidDelimiter, convert_to_folder_structure
 
 
 class Downloader:
@@ -25,13 +26,14 @@ class Downloader:
         }
     )
 
-    def __init__(self, bucket_name: str = None,
+    def __init__(self, bucket_name: str,
                  download_dir: str = None,
                  region_name: str = os.environ.get("AWS_DEFAULT_REGION"),
                  profile_name: str = os.environ.get("PROFILE_NAME"),
                  aws_access_key_id: str = os.environ.get("AWS_ACCESS_KEY_ID"),
                  aws_secret_access_key: str = os.environ.get("AWS_SECRET_ACCESS_KEY"),
-                 logger: logging.Logger = LOGGER):
+                 logger: logging.Logger = LOGGER,
+                 delimiter: str = None):
         """Initiates all the necessary args.
 
         Args:
@@ -54,6 +56,7 @@ class Downloader:
         self.bucket_name = bucket_name
         self.buckets = [bucket_.name for bucket_ in self.s3.buckets.all()]
         self.bucket = None
+        self.delimiter = delimiter
 
     def init(self) -> None:
         """Instantiates the bucket instance.
@@ -92,8 +95,23 @@ class Downloader:
         if not os.path.isdir(self.download_dir):
             os.makedirs(name=self.download_dir)
             self.logger.info(f"Created {os.path.abspath(path=self.download_dir)}")
-        objects = [obj.key for obj in self.bucket.objects.all()]
-        self.logger.info(f"Nuber of objects found in {self.bucket_name}: {len(objects)}")
+        all_s3 = self.bucket.objects.all()
+        if self.delimiter:
+            objects = [obj.key for obj in all_s3 if obj.key.startswith(self.delimiter)]
+            if not objects:
+                available = set()
+                for obj in all_s3:
+                    paths = obj.key.split('/')
+                    if len(paths) > 1:  # folder like hierarchy
+                        available.add('/'.join(paths[0:-1]))
+                if available:  # this means hierarchical structure is present but just not with the same condition
+                    raise InvalidDelimiter(self.delimiter, self.bucket_name, available)
+            self.logger.info(
+                f"Nuber of objects found in {self.bucket_name} limited to {self.delimiter!r}: {len(objects)}"
+            )
+        else:
+            objects = [obj.key for obj in all_s3]
+            self.logger.info(f"Nuber of objects found in {self.bucket_name}: {len(objects)}")
         return objects
 
     def _downloader(self, file: str) -> NoReturn:
@@ -140,3 +158,11 @@ class Downloader:
                       unit="files", leave=True))
         self.logger.info(f"Run Time: {round(float(time.perf_counter()), 2)}s")
         self.exit()
+
+    def get_bucket_structure(self):
+        self.init()
+        # Using list and set will yield the same results but using set we can isolate directories from files
+        return convert_to_folder_structure(set([obj.key for obj in self.bucket.objects.all()]))
+
+    def print_bucket_structure(self):
+        print(self.get_bucket_structure())
