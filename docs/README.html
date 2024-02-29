@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>S3 Download &#8212; S3 Downloader  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/static.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to S3 Downloader’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to S3 Downloader’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">S3 Downloader  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">S3 Download</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p><strong>Versions Supported</strong></p>
+<p><img alt="Python" src="https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue" /></p>
+<p><strong>Language Stats</strong></p>
+<p><img alt="Language count" src="https://img.shields.io/github/languages/count/thevickypedia/s3-downloader" />
+<img alt="Code coverage" src="https://img.shields.io/github/languages/top/thevickypedia/s3-downloader" /></p>
+<p><strong>Repo Stats</strong></p>
+<p><a class="reference external" href="https://github.com/thevickypedia/s3-downloader/blob/main/LICENSE"><img alt="GitHub" src="https://img.shields.io/github/license/thevickypedia/s3-downloader" /></a>
+<a class="reference external" href="https://api.github.com/repos/thevickypedia/s3-downloader"><img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/thevickypedia/s3-downloader" /></a>
+<a class="reference external" href="https://api.github.com/repos/thevickypedia/s3-downloader"><img alt="GitHub code size" src="https://img.shields.io/github/languages/code-size/thevickypedia/s3-downloader" /></a></p>
+<p><strong>Activity</strong></p>
+<p><a class="reference external" href="https://api.github.com/repos/thevickypedia/s3-downloader"><img alt="GitHub Repo created" src="https://img.shields.io/date/1618966420" /></a>
+<a class="reference external" href="https://api.github.com/repos/thevickypedia/s3-downloader"><img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/y/thevickypedia/s3-downloader" /></a>
+<a class="reference external" href="https://api.github.com/repos/thevickypedia/s3-downloader"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/thevickypedia/s3-downloader" /></a></p>
+<p><strong>Build Status</strong></p>
+<p><a class="reference external" href="https://github.com/thevickypedia/s3-downloader/actions/workflows/python-publish.yml"><img alt="pypi-publish" src="https://github.com/thevickypedia/s3-downloader/actions/workflows/python-publish.yml/badge.svg" /></a>
+<a class="reference external" href="https://github.com/thevickypedia/s3-downloader/actions/workflows/pages/pages-build-deployment"><img alt="pages-build-deployment" src="https://github.com/thevickypedia/s3-downloader/actions/workflows/pages/pages-build-deployment/badge.svg" /></a></p>
+<section id="s3-download">
+<h1>S3 Download<a class="headerlink" href="#s3-download" title="Permalink to this heading">¶</a></h1>
+<p>Python module to download all the objects in an S3 bucket.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>s3-downloader
+</pre></div>
+</div>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
+<section id="download-objects-in-parallel">
+<h3>Download objects in parallel<a class="headerlink" href="#download-objects-in-parallel" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">s3</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">Downloader</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s1">&#39;BUCKET_NAME&#39;</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">run_in_parallel</span><span class="p">(</span><span class="n">threads</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># Defaults to 5</span>
+</pre></div>
+</div>
+</section>
+<section id="download-objects-in-sequence">
+<h3>Download objects in sequence<a class="headerlink" href="#download-objects-in-sequence" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">s3</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">Downloader</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s1">&#39;BUCKET_NAME&#39;</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="coding-standards">
+<h2>Coding Standards<a class="headerlink" href="#coding-standards" title="Permalink to this heading">¶</a></h2>
+<p>Docstring format: <a class="reference external" href="https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings"><code class="docutils literal notranslate"><span class="pre">Google</span></code></a> <br>
+Styling conventions: <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/"><code class="docutils literal notranslate"><span class="pre">PEP</span> <span class="pre">8</span></code></a> <br>
+Clean code with pre-commit hooks: <a class="reference external" href="https://flake8.pycqa.org/en/latest/"><code class="docutils literal notranslate"><span class="pre">flake8</span></code></a> and
+<a class="reference external" href="https://pycqa.github.io/isort/"><code class="docutils literal notranslate"><span class="pre">isort</span></code></a></p>
+</section>
+<section id="pypi-package">
+<h2>Pypi Package<a class="headerlink" href="#pypi-package" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://packaging.python.org/tutorials/packaging-projects/"><img alt="pypi-module" src="https://img.shields.io/badge/Software%20Repository-pypi-1f425f.svg" /></a></p>
+<p><a class="reference external" href="https://pypi.org/project/s3-downloader/">https://pypi.org/project/s3-downloader/</a></p>
+</section>
+<section id="license-copyright">
+<h2>License &amp; copyright<a class="headerlink" href="#license-copyright" title="Permalink to this heading">¶</a></h2>
+<p>© Vignesh Rao</p>
+<p>Licensed under the <a class="reference external" href="https://github.com/thevickypedia/s3-downloader/blob/main/LICENSE">MIT License</a></p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">S3 Download</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#download-objects-in-parallel">Download objects in parallel</a></li>
+<li><a class="reference internal" href="#download-objects-in-sequence">Download objects in sequence</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#coding-standards">Coding Standards</a></li>
+<li><a class="reference internal" href="#pypi-package">Pypi Package</a></li>
+<li><a class="reference internal" href="#license-copyright">License &amp; copyright</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Welcome to S3 Downloader’s documentation!</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/README.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to S3 Downloader’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">S3 Downloader  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">S3 Download</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2024, Vignesh Rao.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    </div>
+  </body>
+</html>

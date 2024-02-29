@@ -4,3 +4,5 @@ _build
 .env
 *.egg-info/
 dist/
+docs_gen/_build
+docs_gen/_static

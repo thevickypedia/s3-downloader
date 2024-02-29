@@ -1,0 +1,11 @@
+name: Validate hyperlinks in markdown files
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  none-shall-pass:
+    runs-on: ubuntu-latest
+    steps:
+       - uses: thevickypedia/none-shall-pass@v4

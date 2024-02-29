@@ -8,8 +8,8 @@ import boto3
 from botocore.config import Config
 from tqdm import tqdm
 
-from s3.logger import LOGGER
 from s3.exceptions import InvalidDelimiter, convert_to_folder_structure
+from s3.logger import LOGGER
 
 
 class Downloader:
@@ -92,9 +92,6 @@ class Downloader:
             list:
             List of objects.
         """
-        if not os.path.isdir(self.download_dir):
-            os.makedirs(name=self.download_dir)
-            self.logger.info(f"Created {os.path.abspath(path=self.download_dir)}")
         all_s3 = self.bucket.objects.all()
         if self.delimiter:
             objects = [obj.key for obj in all_s3 if obj.key.startswith(self.delimiter)]
@@ -112,6 +109,9 @@ class Downloader:
         else:
             objects = [obj.key for obj in all_s3]
             self.logger.info(f"Nuber of objects found in {self.bucket_name}: {len(objects)}")
+        if not os.path.isdir(self.download_dir):
+            os.makedirs(name=self.download_dir)
+            self.logger.info(f"Created {os.path.abspath(path=self.download_dir)}")
         return objects
 
     def _downloader(self, file: str) -> NoReturn:
