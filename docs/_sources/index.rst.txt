@@ -12,10 +12,10 @@ Welcome to S3 Downloader's documentation!
 
    README
 
---------S3 Downloader--------
-=============================
-Dumper
-======
+S3 Downloader
+=============
+Main Module
+===========
 .. automodule:: s3.dumper
    :members:
    :undoc-members:
@@ -28,7 +28,7 @@ Exceptions
 
 Logger
 ======
-.. autoclass:: s3.logger
+.. automodule:: s3.logger
    :members:
    :undoc-members:
 

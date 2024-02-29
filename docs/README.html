@@ -90,6 +90,29 @@
 </pre></div>
 </div>
 </section>
+<section id="mandatory-arg">
+<h3>Mandatory arg<a class="headerlink" href="#mandatory-arg" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>bucket_name</strong> - Name of the s3 bucket.</p></li>
+</ul>
+</section>
+<section id="optional-kwargs">
+<h3>Optional kwargs<a class="headerlink" href="#optional-kwargs" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><strong>prefix</strong> - Prefix to filter the objects based on their path. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p><strong>logger</strong> - Bring your own custom pre-configured logger. Defaults to on-screen logging.</p></li>
+<li><p><strong>download_dir</strong> - Name/path of the directory where the objects have to be stored.
+Defaults to <code class="docutils literal notranslate"><span class="pre">bucket_name</span></code> at current working directory.
+<br><br></p></li>
+<li><p><strong>region_name</strong> - AWS region name. Defaults to the env var <code class="docutils literal notranslate"><span class="pre">AWS_DEFAULT_REGION</span></code></p></li>
+<li><p><strong>profile_name</strong> - AWS profile name. Defaults to the env var <code class="docutils literal notranslate"><span class="pre">PROFILE_NAME</span></code></p></li>
+<li><p><strong>aws_access_key_id</strong> - AWS access key ID. Defaults to the env var <code class="docutils literal notranslate"><span class="pre">AWS_ACCESS_KEY_ID</span></code></p></li>
+<li><p><strong>aws_secret_access_key</strong> - AWS secret access key. Defaults to the env var <code class="docutils literal notranslate"><span class="pre">AWS_SECRET_ACCESS_KEY</span></code></p></li>
+</ul>
+<blockquote>
+<div><p>AWS values are loaded from env vars or the default config at <code class="docutils literal notranslate"><span class="pre">~/.aws/config</span></code> / <code class="docutils literal notranslate"><span class="pre">~/.aws/credentials</span></code></p>
+</div></blockquote>
+</section>
 </section>
 <section id="coding-standards">
 <h2>Coding Standards<a class="headerlink" href="#coding-standards" title="Permalink to this heading">¶</a></h2>
@@ -149,6 +172,8 @@ markdown files (including Wiki pages)</p>
 <li><a class="reference internal" href="#usage">Usage</a><ul>
 <li><a class="reference internal" href="#download-objects-in-parallel">Download objects in parallel</a></li>
 <li><a class="reference internal" href="#download-objects-in-sequence">Download objects in sequence</a></li>
+<li><a class="reference internal" href="#mandatory-arg">Mandatory arg</a></li>
+<li><a class="reference internal" href="#optional-kwargs">Optional kwargs</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#coding-standards">Coding Standards</a></li>
