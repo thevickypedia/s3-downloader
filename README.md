@@ -25,7 +25,7 @@
 [![pages-build-deployment][gha-pages-badge]][gha-pages]
 
 # S3 Download
-Python module to download all the objects in an S3 bucket.
+Python module to download objects in an S3 bucket.
 
 ### Installation
 ```shell

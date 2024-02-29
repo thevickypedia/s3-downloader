@@ -9,9 +9,14 @@ clean_docs() {
   # Clean up docs directory keeping the CNAME file if present
   directory="docs"
   file_to_keep="CNAME"
-  if [ -e "${directory}/${file_to_keep}" ]; then
-    find "${directory}" ! -name "${file_to_keep}" -mindepth 1 -delete
-  fi
+  for file in "$directory"/*; do
+    if [ -f "$file" ] && [ "$file" == "$file_to_keep" ]; then
+      echo "Skipping $file_to_keep"
+    else
+      echo "Removing $file"
+      rm -rf "$file"
+    fi
+  done
 }
 
 update_release_notes() {

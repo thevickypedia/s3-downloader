@@ -52,7 +52,8 @@
 <li class="toctree-l2"><a class="reference internal" href="README.html#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="README.html#usage">Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="README.html#coding-standards">Coding Standards</a></li>
-<li class="toctree-l2"><a class="reference internal" href="README.html#pypi-package">Pypi Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#release-notes">Release Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="README.html#linting">Linting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="README.html#license-copyright">License &amp; copyright</a></li>
 </ul>
 </li>
@@ -60,18 +61,18 @@
 </div>
 </section>
 <section id="s3-downloader">
-<h1>——–S3 Downloader——–<a class="headerlink" href="#s3-downloader" title="Permalink to this heading">¶</a></h1>
+<h1>S3 Downloader<a class="headerlink" href="#s3-downloader" title="Permalink to this heading">¶</a></h1>
 </section>
 <section id="module-s3.dumper">
-<span id="dumper"></span><h1>Dumper<a class="headerlink" href="#module-s3.dumper" title="Permalink to this heading">¶</a></h1>
+<span id="main-module"></span><h1>Main Module<a class="headerlink" href="#module-s3.dumper" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="s3.dumper.Downloader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.dumper.</span></span><span class="sig-name descname"><span class="pre">Downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'us-east-2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger:</span> <span class="pre">~logging.Logger</span> <span class="pre">=</span> <span class="pre">&lt;Logger</span> <span class="pre">s3.logger</span> <span class="pre">(DEBUG)&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.dumper.Downloader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.dumper.</span></span><span class="sig-name descname"><span class="pre">Downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Logger</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.dumper.Downloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates Downloader object to download an entire S3 bucket.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Downloader</span>
 </pre></div>
 </div>
-<p>Initiates all the necessary args.</p>
+<p>Initiates all the necessary args and creates a boto3 session with retry logic.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -82,12 +83,13 @@
 <li><p><strong>aws_access_key_id</strong> – AWS access key ID.</p></li>
 <li><p><strong>aws_secret_access_key</strong> – AWS secret access key.</p></li>
 <li><p><strong>logger</strong> – Bring your own logger.</p></li>
+<li><p><strong>prefix</strong> – Specific path from which the objects have to be downloaded.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.RETRY_CONFIG">
-<span class="sig-name descname"><span class="pre">RETRY_CONFIG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;botocore.config.Config</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#s3.dumper.Downloader.RETRY_CONFIG" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">RETRY_CONFIG</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Config</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;botocore.config.Config</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#s3.dumper.Downloader.RETRY_CONFIG" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -98,7 +100,7 @@
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ValueError</strong> – If no bucket name was passed.</p></li>
-<li><p><strong>NotADirectoryError</strong> – If bucket name was not found.</p></li>
+<li><p><a class="reference internal" href="#s3.exceptions.BucketNotFound" title="s3.exceptions.BucketNotFound"><strong>BucketNotFound</strong></a> – If bucket name was not found.</p></li>
 </ul>
 </dd>
 </dl>
@@ -106,27 +108,33 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.exit">
-<span class="sig-name descname"><span class="pre">exit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.exit" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">exit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.exit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logs if there were any failures.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="s3.dumper.Downloader._get_objects">
-<span class="sig-name descname"><span class="pre">_get_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#s3.dumper.Downloader._get_objects" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="s3.dumper.Downloader.get_objects">
+<span class="sig-name descname"><span class="pre">get_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#s3.dumper.Downloader.get_objects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all the objects in the target s3 bucket.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of objects.</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#s3.exceptions.InvalidPrefix" title="s3.exceptions.InvalidPrefix"><strong>InvalidPrefix</strong></a> – If no objects with the given path exists.</p></li>
+<li><p><a class="reference internal" href="#s3.exceptions.NoObjectFound" title="s3.exceptions.NoObjectFound"><strong>NoObjectFound</strong></a> – If the bucket is empty.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of objects in the bucket.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="s3.dumper.Downloader._downloader">
-<span class="sig-name descname"><span class="pre">_downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#s3.dumper.Downloader._downloader" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="s3.dumper.Downloader.downloader">
+<span class="sig-name descname"><span class="pre">downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.downloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download the files in the exact path replacing spaces with underscores for the directory names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -137,13 +145,13 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.run" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates bucket download in a traditional loop.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.run_in_parallel">
-<span class="sig-name descname"><span class="pre">run_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.run_in_parallel" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run_in_parallel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.run_in_parallel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates bucket download in multi-threading.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -154,51 +162,137 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.get_bucket_structure">
-<span class="sig-name descname"><span class="pre">get_bucket_structure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#s3.dumper.Downloader.get_bucket_structure" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">get_bucket_structure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.get_bucket_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the objects in an S3 bucket and forms it into a hierarchical folder like representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns a hierarchical folder like representation of the chosen bucket.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.print_bucket_structure">
-<span class="sig-name descname"><span class="pre">print_bucket_structure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#s3.dumper.Downloader.print_bucket_structure" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">print_bucket_structure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.print_bucket_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints all the objects in an S3 bucket with a folder like representation.</p>
+</dd></dl>
 
 </dd></dl>
 
 </section>
 <section id="module-s3.exceptions">
 <span id="exceptions"></span><h1>Exceptions<a class="headerlink" href="#module-s3.exceptions" title="Permalink to this heading">¶</a></h1>
+<p>Module to store all the custom exceptions and formatters.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">S3Error</span>
+</pre></div>
+</div>
 <dl class="py exception">
 <dt class="sig sig-object py" id="s3.exceptions.S3Error">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">S3Error</span></span><a class="headerlink" href="#s3.exceptions.S3Error" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Custom error for base exception to the s3-downloader module.</p>
+</dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="s3.exceptions.BucketNotFound">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">BucketNotFound</span></span><a class="headerlink" href="#s3.exceptions.BucketNotFound" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Custom error for bucket not found.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="s3.exceptions.NoObjectFound">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">NoObjectFound</span></span><a class="headerlink" href="#s3.exceptions.NoObjectFound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom error for no objects found.</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="s3.exceptions.convert_to_folder_structure">
-<span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">convert_to_folder_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_set</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.exceptions.convert_to_folder_structure" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">convert_to_folder_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#s3.exceptions.convert_to_folder_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert objects in a s3 buckets into a folder like representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sequence</strong> – Takes either a mutable or immutable sequence as an argument.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>String representation of the architecture.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="s3.exceptions.InvalidDelimiter">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidDelimiter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delimiter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">available</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.exceptions.InvalidDelimiter" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="s3.exceptions.InvalidDelimiter.format_error_message">
-<span class="sig-name descname"><span class="pre">format_error_message</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#s3.exceptions.InvalidDelimiter.format_error_message" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="s3.exceptions.InvalidPrefix">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidPrefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">available</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.exceptions.InvalidPrefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom exception for invalid prefix value.</p>
+<p>Initialize an instance of <code class="docutils literal notranslate"><span class="pre">InvalidPrefix</span></code> object inherited from <code class="docutils literal notranslate"><span class="pre">S3Error</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prefix</strong> – Prefix to limit the objects.</p></li>
+<li><p><strong>bucket_name</strong> – Name of the S3 bucket.</p></li>
+<li><p><strong>available</strong> – Available objects in the s3.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="s3.exceptions.InvalidPrefix.format_error_message">
+<span class="sig-name descname"><span class="pre">format_error_message</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#s3.exceptions.InvalidPrefix.format_error_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the formatter error message as a string.</p>
+</dd></dl>
 
 </dd></dl>
 
 </section>
-<section id="logger">
-<h1>Logger<a class="headerlink" href="#logger" title="Permalink to this heading">¶</a></h1>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="s3.logger">
-<span class="sig-prename descclassname"><span class="pre">s3.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#s3.logger" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of &lt;module ‘s3.logger’ from ‘/Users/vicky/Desktop/git/s3-downloader/docs_gen/../s3/logger.py’&gt;</p>
+<section id="module-s3.logger">
+<span id="logger"></span><h1>Logger<a class="headerlink" href="#module-s3.logger" title="Permalink to this heading">¶</a></h1>
+<p>Loads a default logger with StreamHandler set to DEBUG mode.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">logging</span><span class="o">.</span><span class="n">Logger</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="s3.logger.default_handler">
+<span class="sig-prename descclassname"><span class="pre">s3.logger.</span></span><span class="sig-name descname"><span class="pre">default_handler</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">StreamHandler</span></span></span><a class="headerlink" href="#s3.logger.default_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a <code class="docutils literal notranslate"><span class="pre">StreamHandler</span></code> and assigns a default format to it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns an instance of the <code class="docutils literal notranslate"><span class="pre">StreamHandler</span></code> object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>logging.StreamHandler</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3.logger.default_format">
+<span class="sig-prename descclassname"><span class="pre">s3.logger.</span></span><span class="sig-name descname"><span class="pre">default_format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Formatter</span></span></span><a class="headerlink" href="#s3.logger.default_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a logging <code class="docutils literal notranslate"><span class="pre">Formatter</span></code> with a custom message and datetime format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns an instance of the <code class="docutils literal notranslate"><span class="pre">Formatter</span></code> object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>logging.Formatter</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3.logger.default_logger">
+<span class="sig-prename descclassname"><span class="pre">s3.logger.</span></span><span class="sig-name descname"><span class="pre">default_logger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Logger</span></span></span><a class="headerlink" href="#s3.logger.default_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a default logger with debug mode enabled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Returns an instance of the <code class="docutils literal notranslate"><span class="pre">Logger</span></code> object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>logging.Logger</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -222,10 +316,10 @@
     <h3><a href="#">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">Welcome to S3 Downloader’s documentation!</a></li>
-<li><a class="reference internal" href="#s3-downloader">——–S3 Downloader——–</a></li>
-<li><a class="reference internal" href="#module-s3.dumper">Dumper</a></li>
+<li><a class="reference internal" href="#s3-downloader">S3 Downloader</a></li>
+<li><a class="reference internal" href="#module-s3.dumper">Main Module</a></li>
 <li><a class="reference internal" href="#module-s3.exceptions">Exceptions</a></li>
-<li><a class="reference internal" href="#logger">Logger</a></li>
+<li><a class="reference internal" href="#module-s3.logger">Logger</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 

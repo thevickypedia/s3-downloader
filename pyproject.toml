@@ -1,7 +1,7 @@
 [project]
 name = "s3-downloader"
 dynamic = ["version"]
-description = "Python module to download all the objects in an S3 bucket."
+description = "Python module to download objects in an S3 bucket."
 readme = "README.md"
 authors = [{ name = "Vignesh Rao", email = "svignesh1793@gmail.com" }]
 license = { file = "LICENSE" }
