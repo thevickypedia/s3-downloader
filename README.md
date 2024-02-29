@@ -52,6 +52,21 @@ if __name__ == '__main__':
     wrapper.run()
 ```
 
+#### Mandatory arg
+- **bucket_name** - Name of the s3 bucket.
+
+#### Optional kwargs
+- **prefix** - Prefix to filter the objects based on their path. Defaults to `None`
+- **logger** - Bring your own custom pre-configured logger. Defaults to on-screen logging.
+- **download_dir** - Name/path of the directory where the objects have to be stored.
+Defaults to `bucket_name` at current working directory.
+<br><br>
+- **region_name** - AWS region name. Defaults to the env var `AWS_DEFAULT_REGION`
+- **profile_name** - AWS profile name. Defaults to the env var `PROFILE_NAME`
+- **aws_access_key_id** - AWS access key ID. Defaults to the env var `AWS_ACCESS_KEY_ID`
+- **aws_secret_access_key** - AWS secret access key. Defaults to the env var `AWS_SECRET_ACCESS_KEY`
+> AWS values are loaded from env vars or the default config at `~/.aws/config` / `~/.aws/credentials`
+
 ### Coding Standards
 Docstring format: [`Google`](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings) <br>
 Styling conventions: [`PEP 8`](https://www.python.org/dev/peps/pep-0008/) <br>
