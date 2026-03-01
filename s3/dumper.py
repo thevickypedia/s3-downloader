@@ -185,6 +185,8 @@ class Downloader:
         if self.file_logger:
             self.logger.info("Downloading %s [%s] to %s", filename, size_converter(s3_object.size), target_path)
         self.bucket.download_file(source_file, target_file, Config=self.transfer_config, Callback=callback)
+        if self.file_logger:
+            self.logger.info("Downloaded %s to %s", filename, target_path)
 
     def get_downloads(self) -> List[S3Object]:
         """Filters out the objects that are not files and cannot be downloaded.
@@ -193,6 +195,9 @@ class Downloader:
             List[S3Object]:
             List of objects that can be downloaded.
         """
+        # TODO: Add sorting options
+        #  Sort objects by size
+        # objects = [obj for obj in sorted(self.get_objects(), key=lambda x: x.size, reverse=True)]
         objects = self.get_objects()
         ignored, s3_objects = [], []
         for obj in objects:
