@@ -1,5 +1,6 @@
 import math
 from collections.abc import Generator
+from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 
 
@@ -185,3 +186,23 @@ def format_bucket_structure(bucket_structure: Dict[str, int], convert_size: bool
 
     json_structure = clean(tree)
     return size_it(json_structure) if convert_size else json_structure
+
+
+
+@dataclass
+class S3Object:
+    """Represents an S3 object with its key and size."""
+    key: str
+    size: int
+
+
+class DownloadResults(dict):
+    """Object to store results of S3 download.
+
+    >>> DownloadResults
+
+    """
+
+    success: int = 0
+    failed: int = 0
+    skipped: int = 0

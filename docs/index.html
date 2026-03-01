@@ -66,24 +66,8 @@
 <section id="module-s3.dumper">
 <span id="main-module"></span><h1>Main Module<a class="headerlink" href="#module-s3.dumper" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="s3.dumper.S3Object">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.dumper.</span></span><span class="sig-name descname"><span class="pre">S3Object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.dumper.S3Object" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents an S3 object with its key and size.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="s3.dumper.S3Object.key">
-<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#s3.dumper.S3Object.key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="s3.dumper.S3Object.size">
-<span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#s3.dumper.S3Object.size" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt class="sig sig-object py" id="s3.dumper.Downloader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.dumper.</span></span><span class="sig-name descname"><span class="pre">Downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger:</span> <span class="pre">~typing.Optional[~logging.Logger]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_type:</span> <span class="pre">~typing.Optional[~s3.logger.LogType]</span> <span class="pre">=</span> <span class="pre">LogType.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix:</span> <span class="pre">~typing.Optional[~typing.Union[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.List[str]]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_config:</span> <span class="pre">~typing.Optional[~botocore.config.Config]</span> <span class="pre">=</span> <span class="pre">&lt;botocore.config.Config</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_config:</span> <span class="pre">~typing.Optional[~boto3.s3.transfer.TransferConfig]</span> <span class="pre">=</span> <span class="pre">&lt;boto3.s3.transfer.TransferConfig</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.dumper.Downloader" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.dumper.</span></span><span class="sig-name descname"><span class="pre">Downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key:</span> <span class="pre">~typing.Optional[str]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger:</span> <span class="pre">~typing.Optional[~logging.Logger]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_type:</span> <span class="pre">~s3.logger.LogType</span> <span class="pre">=</span> <span class="pre">LogType.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix:</span> <span class="pre">~typing.Optional[~typing.Union[str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">~typing.List[str]]]</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_config:</span> <span class="pre">~botocore.config.Config</span> <span class="pre">=</span> <span class="pre">&lt;botocore.config.Config</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_config:</span> <span class="pre">~boto3.s3.transfer.TransferConfig</span> <span class="pre">=</span> <span class="pre">&lt;boto3.s3.transfer.TransferConfig</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.dumper.Downloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiates Downloader object to download an entire S3 bucket.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Downloader</span>
 </pre></div>
@@ -138,7 +122,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.get_objects">
-<span class="sig-name descname"><span class="pre">get_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#s3.dumper.S3Object" title="s3.dumper.S3Object"><span class="pre">S3Object</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#s3.dumper.Downloader.get_objects" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#s3.squire.S3Object" title="s3.squire.S3Object"><span class="pre">S3Object</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#s3.dumper.Downloader.get_objects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all the objects in the target s3 bucket.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
@@ -151,27 +135,35 @@
 <dd class="field-even"><p>List of objects in the bucket.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[<a class="reference internal" href="#s3.dumper.S3Object" title="s3.dumper.S3Object">S3Object</a>]</p>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#s3.squire.S3Object" title="s3.squire.S3Object">S3Object</a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.downloader">
-<span class="sig-name descname"><span class="pre">downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s3_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3.dumper.S3Object" title="s3.dumper.S3Object"><span class="pre">S3Object</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.downloader" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s3_object</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3.squire.S3Object" title="s3.squire.S3Object"><span class="pre">S3Object</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#s3.progress.ProgressPercentage" title="s3.progress.ProgressPercentage"><span class="pre">ProgressPercentage</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.downloader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download the files in the exact path as in the bucket.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s3_object</strong> – Takes the <code class="docutils literal notranslate"><span class="pre">S3Object</span></code> as an argument.</p></li>
+<li><p><strong>callback</strong> – Takes the <code class="docutils literal notranslate"><span class="pre">ProgressPercentage</span></code> callback to track download progress.</p></li>
+</ul>
+</dd>
+</dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
 <li><p>Checks if the file already exists and is of the same size to avoid redundant downloads.</p></li>
 </ul>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>s3_object</strong> – Takes the <code class="docutils literal notranslate"><span class="pre">S3Object</span></code> as an argument.</p>
-</dd>
-</dl>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3.dumper.Downloader.get_uploadables">
+<span class="sig-name descname"><span class="pre">get_uploadables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#s3.squire.S3Object" title="s3.squire.S3Object"><span class="pre">S3Object</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#s3.dumper.Downloader.get_uploadables" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.run">
@@ -273,6 +265,28 @@
 </dd></dl>
 
 </section>
+<section id="module-s3.progress">
+<span id="progress"></span><h1>Progress<a class="headerlink" href="#module-s3.progress" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="s3.progress.ProgressPercentage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.progress.</span></span><span class="sig-name descname"><span class="pre">ProgressPercentage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">alive_bar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.progress.ProgressPercentage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tracks the file transfer progress in S3 and updates the alive_bar.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ProgressPercentage</span>
+</pre></div>
+</div>
+<p>Initializes the progress tracker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – Name of the file being transferred.</p></li>
+<li><p><strong>size</strong> – Total size of the file in bytes.</p></li>
+<li><p><strong>bar</strong> – alive_bar instance to update progress.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-s3.squire">
 <span id="squire"></span><h1>Squire<a class="headerlink" href="#module-s3.squire" title="Permalink to this heading">¶</a></h1>
 <dl class="py function">
@@ -341,6 +355,46 @@
 <dd class="field-odd"><p>Dict[str, Any]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3.squire.S3Object">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.squire.</span></span><span class="sig-name descname"><span class="pre">S3Object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.squire.S3Object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents an S3 object with its key and size.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.S3Object.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#s3.squire.S3Object.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.S3Object.size">
+<span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#s3.squire.S3Object.size" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="s3.squire.DownloadResults">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.squire.</span></span><span class="sig-name descname"><span class="pre">DownloadResults</span></span><a class="headerlink" href="#s3.squire.DownloadResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object to store results of S3 download.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DownloadResults</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.DownloadResults.success">
+<span class="sig-name descname"><span class="pre">success</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#s3.squire.DownloadResults.success" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.DownloadResults.failed">
+<span class="sig-name descname"><span class="pre">failed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#s3.squire.DownloadResults.failed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.DownloadResults.skipped">
+<span class="sig-name descname"><span class="pre">skipped</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#s3.squire.DownloadResults.skipped" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -441,6 +495,7 @@
 <li><a class="reference internal" href="#s3-downloader">S3 Downloader</a></li>
 <li><a class="reference internal" href="#module-s3.dumper">Main Module</a></li>
 <li><a class="reference internal" href="#module-s3.exceptions">Exceptions</a></li>
+<li><a class="reference internal" href="#module-s3.progress">Progress</a></li>
 <li><a class="reference internal" href="#module-s3.squire">Squire</a></li>
 <li><a class="reference internal" href="#module-s3.logger">Logger</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>

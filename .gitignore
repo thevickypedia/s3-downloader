@@ -6,3 +6,6 @@ _build
 dist/
 docs_gen/_build
 docs_gen/_static
+*.json
+logs/
+*.log

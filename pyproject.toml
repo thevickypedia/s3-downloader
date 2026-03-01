@@ -15,7 +15,7 @@ classifiers = [
 ]
 dependencies = [
     "boto3",
-    "tqdm",
+    "alive-progress",
     "click"
 ]
 keywords = ["s3"]

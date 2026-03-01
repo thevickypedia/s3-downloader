@@ -3,25 +3,18 @@ import logging
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union
 
 import boto3
+from alive_progress import alive_bar
 from boto3.s3.transfer import TransferConfig
 from botocore.config import Config
-from tqdm import tqdm
 
 from s3.exceptions import BucketNotFound, InvalidPrefix, NoObjectFound
 from s3.logger import LogType, default_logger
-from s3.squire import (convert_to_folder_structure, format_bucket_structure,
-                       refine_prefix, size_converter)
-
-
-@dataclass
-class S3Object:
-    """Represents an S3 object with its key and size."""
-    key: str
-    size: int
+from s3.progress import ProgressPercentage
+from s3.squire import (DownloadResults, S3Object, convert_to_folder_structure,
+                       format_bucket_structure, refine_prefix, size_converter)
 
 
 class Downloader:
@@ -50,16 +43,16 @@ class Downloader:
     )
 
     def __init__(self, bucket_name: str,
-                 download_dir: Optional[str] = None,
-                 region_name: Optional[str] = None,
-                 profile_name: Optional[str] = None,
-                 aws_access_key_id: Optional[str] = None,
-                 aws_secret_access_key: Optional[str] = None,
-                 logger: Optional[logging.Logger] = None,
-                 log_type: Optional[LogType] = LogType.stdout,
-                 prefix: Optional[Union[str, List[str]]] = None,
-                 retry_config: Optional[Config] = RETRY_CONFIG,
-                 transfer_config: Optional[TransferConfig] = TRANSFER_CONFIG):
+                 download_dir: str = None,
+                 region_name: str = None,
+                 profile_name: str = None,
+                 aws_access_key_id: str = None,
+                 aws_secret_access_key: str = None,
+                 logger: logging.Logger = None,
+                 log_type: LogType = LogType.stdout,
+                 prefix: Union[str, List[str]] = None,
+                 retry_config: Config = RETRY_CONFIG,
+                 transfer_config: TransferConfig = TRANSFER_CONFIG):
         """Initiates all the necessary args and creates a boto3 session with retry logic.
 
         Args:
@@ -91,6 +84,8 @@ class Downloader:
         self.bucket = None
         self.prefix_list = list(refine_prefix(prefix)) if prefix else None
         self.start_time = time.time()
+        self.results = DownloadResults()
+        self.alive_bar_kwargs = dict(title="Progress", bar="smooth", spinner=None, enrich_print=False)
 
     def init(self) -> None:
         """Instantiates the bucket instance.
@@ -120,6 +115,9 @@ class Downloader:
             self.logger.warning("%d file(s) failed to download since no filename was specified", len(self.no_filename))
             self.logger.warning(self.no_filename)
             self.logger.info("This can most likely be a system generated file, review and remove it in s3 if need be.")
+        self.logger.info("Successful downloads: %d", self.results.success)
+        self.logger.info("Failed downloads: %d", self.results.failed)
+        self.logger.info("Skipped downloads [duplicates]: %d", self.results.skipped)
         self.logger.info(f"Run Time: {round(float(time.time() - self.start_time), 2)}s")
 
     def get_objects(self) -> List[S3Object]:
@@ -155,14 +153,15 @@ class Downloader:
             f"\n\n\tNo objects found in {self.bucket_name}"
         )
 
-    def downloader(self, s3_object: S3Object) -> None:
+    def downloader(self, s3_object: S3Object, callback: ProgressPercentage) -> None:
         """Download the files in the exact path as in the bucket.
-
-        See Also:
-            - Checks if the file already exists and is of the same size to avoid redundant downloads.
 
         Args:
             s3_object: Takes the ``S3Object`` as an argument.
+            callback: Takes the ``ProgressPercentage`` callback to track download progress.
+
+        See Also:
+            - Checks if the file already exists and is of the same size to avoid redundant downloads.
         """
         source_file = s3_object.key
         path, filename = os.path.split(source_file)
@@ -181,35 +180,13 @@ class Downloader:
                     "%s already exists and is of the same size [%s], skipping download.",
                     target_file, size_converter(s3_object.size)
                 )
+            self.results.skipped += 1
             return
         if self.file_logger:
             self.logger.info("Downloading %s [%s] to %s", filename, size_converter(s3_object.size), target_path)
-        self.bucket.download_file(source_file, target_file, Config=self.transfer_config)
+        self.bucket.download_file(source_file, target_file, Config=self.transfer_config, Callback=callback)
 
-    def run(self) -> None:
-        """Initiates bucket download in a traditional loop."""
-        self.init()
-        keys = self.get_objects()
-        self.logger.debug(keys)
-        self.logger.info("Initiating download process.")
-        for s3_object in tqdm(
-                keys,
-                total=len(keys),
-                unit="file",
-                leave=True,
-                desc=f"Downloading files from {self.bucket_name}"
-        ):
-            self.downloader(s3_object=s3_object)
-        self.exit()
-
-    def run_in_parallel(self, threads: int = 5) -> None:
-        """Initiates bucket download in multi-threading.
-
-        Args:
-            threads: Number of threads to use for downloading using multi-threading.
-        """
-        self.init()
-        self.logger.info(f"Number of threads: {threads}")
+    def get_uploadables(self) -> List[S3Object]:
         objects = self.get_objects()
         ignored, s3_objects = [], []
         for obj in objects:
@@ -222,10 +199,61 @@ class Downloader:
             "Initiating download process for %d files. Ignoring %d folders.",
             len(s3_objects), len(ignored)
         )
-        with ThreadPoolExecutor(max_workers=threads) as executor:
-            list(tqdm(iterable=executor.map(self.downloader, s3_objects),
-                      total=len(s3_objects), desc=f"Downloading objects from {self.bucket_name}",
-                      unit="objects", leave=True))
+        return s3_objects
+
+    def run(self) -> None:
+        """Initiates bucket download in a traditional loop."""
+        self.init()
+        s3_objects = self.get_uploadables()
+        with alive_bar(len(s3_objects), **self.alive_bar_kwargs) as overall_bar:
+            for s3_object in s3_objects:
+                progress_callback = ProgressPercentage(
+                    filename=s3_object.key, size=s3_object.size, bar=overall_bar
+                )
+                try:
+                    self.downloader(s3_object=s3_object, callback=progress_callback)
+                except Exception as error:
+                    if self.file_logger:
+                        self.logger.error("Error downloading %s: %s", s3_object.key, str(error))
+                    self.results.failed += 1
+                except KeyboardInterrupt:
+                    self.logger.warning("Download interrupted by user. Exiting...")
+                    break
+                overall_bar()  # increment overall progress bar
+        self.exit()
+
+    def run_in_parallel(self, threads: int = 5) -> None:
+        """Initiates bucket download in multi-threading.
+
+        Args:
+            threads: Number of threads to use for downloading using multi-threading.
+        """
+        self.init()
+        self.logger.info(f"Number of threads: {threads}")
+        s3_objects = self.get_uploadables()
+        with alive_bar(len(s3_objects), **self.alive_bar_kwargs) as overall_bar:
+            with ThreadPoolExecutor(max_workers=threads) as executor:
+                futures = {}
+                for s3_object in s3_objects:
+                    progress_callback = ProgressPercentage(
+                        filename=s3_object.key, size=s3_object.size, bar=overall_bar
+                    )
+                    future = executor.submit(self.downloader, s3_object=s3_object, callback=progress_callback)
+                    futures[future] = s3_object
+                for future in futures:
+                    try:
+                        future.result()
+                        self.results.success += 1
+                    except Exception as error:
+                        s3_object = futures[future]
+                        if self.file_logger:
+                            self.logger.error("Error downloading %s: %s", s3_object.key, str(error))
+                        self.results.failed += 1
+                    except KeyboardInterrupt:
+                        self.logger.warning("Download interrupted by user. Exiting...")
+                        executor.shutdown(wait=False, cancel_futures=True)
+                        break
+                    overall_bar()  # Increment overall bar after each upload finishes
         self.exit()
 
     def get_bucket_structure(self, raw: bool = False) -> Union[str, Dict[str, int]]:

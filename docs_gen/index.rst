@@ -26,6 +26,12 @@ Exceptions
    :members:
    :undoc-members:
 
+Progress
+========
+.. automodule:: s3.progress
+   :members:
+   :undoc-members:
+
 Squire
 ======
 .. automodule:: s3.squire
