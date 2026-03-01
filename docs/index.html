@@ -108,7 +108,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.exit">
-<span class="sig-name descname"><span class="pre">exit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NoReturn</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.exit" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">exit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.exit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logs if there were any failures.</p>
 </dd></dl>
 
@@ -162,14 +162,25 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.get_bucket_structure">
-<span class="sig-name descname"><span class="pre">get_bucket_structure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.get_bucket_structure" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_bucket_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#s3.dumper.Downloader.get_bucket_structure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets all the objects in an S3 bucket and forms it into a hierarchical folder like representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Returns a hierarchical folder like representation of the chosen bucket.</p>
+<dd class="field-odd"><p>Returns a hierarchical folder like representation of the chosen bucket or the set of objects if raw is True.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dd class="field-even"><p>Union[str, Set[Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="s3.dumper.Downloader.save_bucket_structure">
+<span class="sig-name descname"><span class="pre">save_bucket_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bucket_structure.json'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.save_bucket_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the bucket structure in a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> – Name of the file to save the bucket structure in.</p>
 </dd>
 </dl>
 </dd></dl>

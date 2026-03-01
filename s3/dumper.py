@@ -1,8 +1,9 @@
+import json
 import logging
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor
-from typing import List, NoReturn
+from typing import Any, Dict, List, Set, Union
 
 import boto3
 from botocore.config import Config
@@ -65,6 +66,7 @@ class Downloader:
             self.prefix = f"{prefix}/"
         else:
             self.prefix = None
+        self.start_time = time.time()
 
     def init(self) -> None:
         """Instantiates the bucket instance.
@@ -86,13 +88,15 @@ class Downloader:
         self.logger.info("Bucket objects from %s will be dumped at %s",
                          self.bucket_name, os.path.abspath(self.download_dir))
         self.bucket = self.s3.Bucket(self.bucket_name)
+        self.start_time = time.time()
 
-    def exit(self) -> NoReturn:
+    def exit(self) -> None:
         """Logs if there were any failures."""
         if self.no_filename:
             self.logger.warning("%d file(s) failed to download since no filename was specified", len(self.no_filename))
             self.logger.warning(self.no_filename)
             self.logger.info("This can most likely be a system generated file, review and remove it in s3 if need be.")
+        self.logger.info(f"Run Time: {round(float(time.time() - self.start_time), 2)}s")
 
     def get_objects(self) -> List[str]:
         """Get all the objects in the target s3 bucket.
@@ -172,19 +176,69 @@ class Downloader:
             list(tqdm(iterable=executor.map(self.downloader, keys),
                       total=len(keys), desc=f"Downloading files from {self.bucket_name}",
                       unit="files", leave=True))
-        self.logger.info(f"Run Time: {round(float(time.perf_counter()), 2)}s")
         self.exit()
 
-    def get_bucket_structure(self) -> str:
+    def get_bucket_structure(self, raw: bool = False) -> Union[str, Set[Any]]:
         """Gets all the objects in an S3 bucket and forms it into a hierarchical folder like representation.
 
         Returns:
-            str:
-            Returns a hierarchical folder like representation of the chosen bucket.
+            Union[str, Set[Any]]:
+            Returns a hierarchical folder like representation of the chosen bucket or the set of objects if raw is True.
         """
         self.init()
         # Using list and set will yield the same results but using set we can isolate directories from files
-        return convert_to_folder_structure(set([obj.key for obj in self.bucket.objects.all()]))
+        structure = set(obj.key for obj in self.bucket.objects.all())
+        if raw:
+            return structure
+        return convert_to_folder_structure(structure)
+
+    def save_bucket_structure(self, filename: str = "bucket_structure.json") -> None:
+        """Saves the bucket structure in a JSON file.
+
+        Args:
+            filename: Name of the file to save the bucket structure in.
+        """
+        assert filename.endswith(".json"), "Filename must end with .json"
+        tree = {}
+        for key in self.get_bucket_structure(raw=True):
+            parts = key.strip("/").split("/")
+            current = tree
+
+            for part in parts[:-1]:
+                current = current.setdefault(part, {})
+
+            # Add file
+            current.setdefault("__files__", []).append(parts[-1])
+
+        def clean(node: Dict[str, Any]) -> Dict[str, Any]:
+            """Recursively clean the tree structure to separate files and folders.
+
+            Args:
+                node: Each node in the tree structure.
+
+            Returns:
+                Dict[str, Any]:
+                Cleaned node with separate "files" key for files and other keys for folders.
+            """
+            result = {}
+
+            files = node.get("__files__", [])
+            if files:
+                result["files"] = sorted(files)
+
+            for k, v in node.items():
+                if k == "__files__":
+                    continue
+                result[k] = clean(v)
+
+            return result
+
+        json_structure = clean(tree)
+
+        with open(filename, "w") as f:
+            json.dump(json_structure, f, indent=2)
+
+        self.logger.info("%s created successfully.", filename)
 
     def print_bucket_structure(self) -> None:
         """Prints all the objects in an S3 bucket with a folder like representation."""
