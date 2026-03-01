@@ -9,9 +9,9 @@ import boto3
 from botocore.config import Config
 from tqdm import tqdm
 
-from s3.exceptions import (BucketNotFound, InvalidPrefix, NoObjectFound,
-                           convert_to_folder_structure)
+from s3.exceptions import BucketNotFound, InvalidPrefix, NoObjectFound
 from s3.logger import default_logger
+from s3.squire import convert_to_folder_structure, size_converter
 
 
 class Downloader:
@@ -112,11 +112,11 @@ class Downloader:
         if self.prefix:
             objects = [obj.key for obj in self.bucket.objects.filter(Prefix=self.prefix)]
             if not objects:
-                available = set()
+                available = {}
                 for obj in self.bucket.objects.all():
                     paths = obj.key.split('/')
                     if len(paths) > 1:  # folder like hierarchy
-                        available.add('/'.join(paths[0:-1]))
+                        available['/'.join(paths[0:-1])] = obj.size
                 if available:  # this means hierarchical structure is present but just not with the same condition
                     raise InvalidPrefix(self.prefix, self.bucket_name, available)
             self.logger.info(
@@ -178,40 +178,45 @@ class Downloader:
                       unit="files", leave=True))
         self.exit()
 
-    def get_bucket_structure(self, raw: bool = False) -> Union[str, Set[Any]]:
+    def get_bucket_structure(self, raw: bool = False) -> Union[str, Dict[str, int]]:
         """Gets all the objects in an S3 bucket and forms it into a hierarchical folder like representation.
 
         Returns:
-            Union[str, Set[Any]]:
+            Union[str, Dict[str, int]]:
             Returns a hierarchical folder like representation of the chosen bucket or the set of objects if raw is True.
         """
         self.init()
         # Using list and set will yield the same results but using set we can isolate directories from files
-        structure = set(obj.key for obj in self.bucket.objects.all())
+        structure = {obj.key: obj.size for obj in self.bucket.objects.all()}
         if raw:
             return structure
         return convert_to_folder_structure(structure)
 
-    def save_bucket_structure(self, filename: str = "bucket_structure.json") -> None:
+    def save_bucket_structure(self, filename: str = "bucket_structure.json", convert_size: bool = False) -> None:
         """Saves the bucket structure in a JSON file.
 
         Args:
             filename: Name of the file to save the bucket structure in.
+            convert_size: Whether to convert the size into human-readable format or not.
         """
         assert filename.endswith(".json"), "Filename must end with .json"
         tree = {}
-        for key in self.get_bucket_structure(raw=True):
+        # Iterate over key + size
+        for key, size in self.get_bucket_structure(raw=True).items():
             parts = key.strip("/").split("/")
             current = tree
 
             for part in parts[:-1]:
                 current = current.setdefault(part, {})
 
-            # Add file
-            current.setdefault("__files__", []).append(parts[-1])
+            # Add file with size
+            current.setdefault("__files__", []).append({
+                "name": parts[-1],
+                "size": size
+            })
 
         def clean(node: Dict[str, Any]) -> Dict[str, Any]:
-            """Recursively clean the tree structure to separate files and folders.
+            """Recursively clean the tree structure and calculate folder sizes.
 
             Args:
                 node: Each node in the tree structure.
@@ -221,22 +226,54 @@ class Downloader:
                 Cleaned node with separate "files" key for files and other keys for folders.
             """
             result = {}
+            total_size = 0
 
+            # Process files
             files = node.get("__files__", [])
             if files:
-                result["files"] = sorted(files)
+                result["files"] = sorted(files, key=lambda x: x["name"])
+                total_size += sum(f["size"] for f in files)
 
+            # Process subfolders
             for k, v in node.items():
                 if k == "__files__":
                     continue
-                result[k] = clean(v)
+                cleaned_subfolder = clean(v)
+                result[k] = cleaned_subfolder
+                total_size += cleaned_subfolder.get("size", 0)
+
+            # Add folder size
+            result["size"] = total_size
 
             return result
 
+
+        def size_it(node: Dict[str, Any]) -> Dict[str, Any]:
+            """Recursively convert sizes in the tree structure to human-readable format.
+
+            Args:
+                node: Each node in the tree structure.
+
+            Returns:
+                Dict[str, Any]:
+                Node with sizes converted to human-readable format.
+            """
+            if "size" in node:
+                node["size"] = size_converter(node["size"])
+            for k, v in node.items():
+                if isinstance(v, dict):
+                    size_it(v)
+                elif isinstance(v, list):
+                    for item in v:
+                        if isinstance(item, dict) and "size" in item:
+                            item["size"] = size_converter(item["size"])
+            return node
+
         json_structure = clean(tree)
+        sized_structure = size_it(json_structure) if convert_size else json_structure
 
         with open(filename, "w") as f:
-            json.dump(json_structure, f, indent=2)
+            json.dump(sized_structure, f, indent=2)
 
         self.logger.info("%s created successfully.", filename)
 

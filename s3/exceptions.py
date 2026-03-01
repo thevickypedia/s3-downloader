@@ -4,7 +4,9 @@
 
 """
 
-from typing import Dict, Set
+from typing import Dict
+
+from s3.squire import convert_to_folder_structure, size_converter
 
 
 class S3Error(Exception):
@@ -19,49 +21,10 @@ class NoObjectFound(S3Error):
     """Custom error for no objects found."""
 
 
-def convert_to_folder_structure(sequence: Set[str]) -> str:
-    """Convert objects in a s3 buckets into a folder like representation.
-
-    Args:
-        sequence: Takes either a mutable or immutable sequence as an argument.
-
-    Returns:
-        str:
-        String representation of the architecture.
-    """
-    folder_structure = {}
-    for item in sequence:
-        parts = item.split('/')
-        current_level = folder_structure
-        for part in parts:
-            current_level = current_level.setdefault(part, {})
-
-    def generate_folder_structure(structure: Dict[str, dict], indent: str = '') -> str:
-        """Generates the folder like structure.
-
-        Args:
-            structure: Structure of folder objects as key-value pairs.
-            indent: Required indentation for the ASCII.
-        """
-        result = ''
-        for i, (key, value) in enumerate(structure.items()):
-            if i == len(structure) - 1:
-                result += indent + '└── ' + key + '\n'
-                sub_indent = indent + '    '
-            else:
-                result += indent + '├── ' + key + '\n'
-                sub_indent = indent + '│   '
-            if value:
-                result += generate_folder_structure(value, sub_indent)
-        return result
-
-    return generate_folder_structure(folder_structure)
-
-
 class InvalidPrefix(S3Error):
     """Custom exception for invalid prefix value."""
 
-    def __init__(self, prefix: str, bucket_name: str, available: Set[str]):
+    def __init__(self, prefix: str, bucket_name: str, available: Dict[str, int]):
         """Initialize an instance of ``InvalidPrefix`` object inherited from ``S3Error``
 
         Args:

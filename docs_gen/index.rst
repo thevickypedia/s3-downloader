@@ -26,6 +26,12 @@ Exceptions
    :members:
    :undoc-members:
 
+Squire
+======
+.. automodule:: s3.squire
+   :members:
+   :undoc-members:
+
 Logger
 ======
 .. automodule:: s3.logger

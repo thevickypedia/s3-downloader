@@ -162,25 +162,28 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.get_bucket_structure">
-<span class="sig-name descname"><span class="pre">get_bucket_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#s3.dumper.Downloader.get_bucket_structure" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_bucket_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#s3.dumper.Downloader.get_bucket_structure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets all the objects in an S3 bucket and forms it into a hierarchical folder like representation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Returns a hierarchical folder like representation of the chosen bucket or the set of objects if raw is True.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Union[str, Set[Any]]</p>
+<dd class="field-even"><p>Union[str, Dict[str, int]]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.save_bucket_structure">
-<span class="sig-name descname"><span class="pre">save_bucket_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bucket_structure.json'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.save_bucket_structure" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">save_bucket_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bucket_structure.json'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#s3.dumper.Downloader.save_bucket_structure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the bucket structure in a JSON file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> – Name of the file to save the bucket structure in.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> – Name of the file to save the bucket structure in.</p></li>
+<li><p><strong>convert_size</strong> – Whether to convert the size into human-readable format or not.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -218,26 +221,9 @@
 <dd><p>Custom error for no objects found.</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="s3.exceptions.convert_to_folder_structure">
-<span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">convert_to_folder_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#s3.exceptions.convert_to_folder_structure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert objects in a s3 buckets into a folder like representation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sequence</strong> – Takes either a mutable or immutable sequence as an argument.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>String representation of the architecture.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py exception">
 <dt class="sig sig-object py" id="s3.exceptions.InvalidPrefix">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidPrefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">available</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.exceptions.InvalidPrefix" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.exceptions.</span></span><span class="sig-name descname"><span class="pre">InvalidPrefix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bucket_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">available</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.exceptions.InvalidPrefix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Custom exception for invalid prefix value.</p>
 <p>Initialize an instance of <code class="docutils literal notranslate"><span class="pre">InvalidPrefix</span></code> object inherited from <code class="docutils literal notranslate"><span class="pre">S3Error</span></code></p>
 <dl class="field-list simple">
@@ -255,6 +241,43 @@
 <dd><p>Returns the formatter error message as a string.</p>
 </dd></dl>
 
+</dd></dl>
+
+</section>
+<section id="module-s3.squire">
+<span id="squire"></span><h1>Squire<a class="headerlink" href="#module-s3.squire" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="s3.squire.size_converter">
+<span class="sig-prename descclassname"><span class="pre">s3.squire.</span></span><span class="sig-name descname"><span class="pre">size_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">byte_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#s3.squire.size_converter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the current memory consumed and converts it to human friendly format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>byte_size</strong> – Receives byte size as argument.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Converted human understandable size.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="s3.squire.convert_to_folder_structure">
+<span class="sig-prename descclassname"><span class="pre">s3.squire.</span></span><span class="sig-name descname"><span class="pre">convert_to_folder_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#s3.squire.convert_to_folder_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert objects in an S3 bucket into a folder-like representation including sizes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sequence</strong> – A dictionary where keys are S3 object keys (paths) and values are their sizes in bytes.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A string representing the folder structure of the S3 bucket, with each file and folder showing the size.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -330,6 +353,7 @@
 <li><a class="reference internal" href="#s3-downloader">S3 Downloader</a></li>
 <li><a class="reference internal" href="#module-s3.dumper">Main Module</a></li>
 <li><a class="reference internal" href="#module-s3.exceptions">Exceptions</a></li>
+<li><a class="reference internal" href="#module-s3.squire">Squire</a></li>
 <li><a class="reference internal" href="#module-s3.logger">Logger</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
