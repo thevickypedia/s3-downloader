@@ -15,7 +15,8 @@ classifiers = [
 ]
 dependencies = [
     "boto3",
-    "tqdm"
+    "tqdm",
+    "click"
 ]
 keywords = ["s3"]
 requires-python = ">=3.8"
@@ -29,6 +30,9 @@ version      = {attr = "s3.version"}
 [build-system]
 requires      = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project.scripts]
+s3 = "s3:_cli"
 
 [project.optional-dependencies]
 dev = ["sphinx==5.1.1", "pre-commit", "recommonmark"]

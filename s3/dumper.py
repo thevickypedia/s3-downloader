@@ -3,6 +3,7 @@ import logging
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 from typing import Any, Dict, List, Union
 
 import boto3
@@ -14,6 +15,12 @@ from s3.logger import default_logger
 from s3.squire import (convert_to_folder_structure, refine_prefix,
                        size_converter)
 
+
+@dataclass
+class S3Object:
+    """Represents an S3 object with its key and size."""
+    key: str
+    size: int
 
 class Downloader:
     """Initiates Downloader object to download an entire S3 bucket.
@@ -95,7 +102,7 @@ class Downloader:
             self.logger.info("This can most likely be a system generated file, review and remove it in s3 if need be.")
         self.logger.info(f"Run Time: {round(float(time.time() - self.start_time), 2)}s")
 
-    def get_objects(self) -> List[str]:
+    def get_objects(self) -> List[S3Object]:
         """Get all the objects in the target s3 bucket.
 
         Raises:
@@ -103,21 +110,21 @@ class Downloader:
             NoObjectFound: If the bucket is empty.
 
         Returns:
-            list:
+            List[S3Object]:
             List of objects in the bucket.
         """
         if self.prefix_list:
             objects = []
             for prefix in self.prefix_list:
-                if prefixed_objects := [obj.key for obj in self.bucket.objects.filter(Prefix=prefix)]:
+                if prefixed_objects := [obj for obj in self.bucket.objects.filter(Prefix=prefix)]:
                     objects.extend(prefixed_objects)
                     self.logger.info(
-                        f"Nuber of objects found in {self.bucket_name} limited to {prefix!r}: {len(objects)}"
+                        f"Number of objects found in {self.bucket_name} limited to {prefix!r}: {len(objects)}"
                     )
                 else:
                     raise InvalidPrefix(prefix, self.bucket_name)
         else:
-            objects = [obj.key for obj in self.bucket.objects.all()]
+            objects: List[S3Object] = [obj for obj in self.bucket.objects.all()]
             self.logger.info(f"Nuber of objects found in {self.bucket_name}: {len(objects)}")
         if objects:
             if not os.path.isdir(self.download_dir):
@@ -128,22 +135,30 @@ class Downloader:
             f"\n\n\tNo objects found in {self.bucket_name}"
         )
 
-    def downloader(self, file: str) -> None:
-        """Download the files in the exact path replacing spaces with underscores for the directory names.
+    def downloader(self, s3_object: S3Object) -> None:
+        """Download the files in the exact path as in the bucket.
+
+        See Also:
+            - Checks if the file already exists and is of the same size to avoid redundant downloads.
 
         Args:
-            file: Takes the filename as an argument.
+            s3_object: Takes the ``S3Object`` as an argument.
         """
-        path, filename = os.path.split(file)
+        source_file = s3_object.key
+        path, filename = os.path.split(source_file)
         if not filename:
-            self.no_filename.append(file)
+            self.no_filename.append(source_file)
             return
-        target_path = os.path.join(self.download_dir, path.replace(" ", "_"))
+        target_path = os.path.join(self.download_dir, path)
         try:
             os.makedirs(target_path)
         except FileExistsError:  # Multiple threads running simultaneously can cause this
             pass
-        self.bucket.download_file(file, os.path.join(target_path, filename))
+        target_file = os.path.join(target_path, filename)
+        if os.path.isfile(target_file) and os.path.getsize(target_file) == s3_object.size:
+            self.logger.info("%s already exists and is of the same size. Skipping download.", target_file)
+            return
+        self.bucket.download_file(source_file, target_file)
 
     def run(self) -> None:
         """Initiates bucket download in a traditional loop."""
@@ -151,9 +166,9 @@ class Downloader:
         keys = self.get_objects()
         self.logger.debug(keys)
         self.logger.info("Initiating download process.")
-        for file in tqdm(keys, total=len(keys), unit="file", leave=True,
+        for s3_object in tqdm(keys, total=len(keys), unit="file", leave=True,
                          desc=f"Downloading files from {self.bucket_name}"):
-            self.downloader(file=file)
+            self.downloader(s3_object=s3_object)
         self.exit()
 
     def run_in_parallel(self, threads: int = 5) -> None:
@@ -164,12 +179,23 @@ class Downloader:
         """
         self.init()
         self.logger.info(f"Number of threads: {threads}")
-        keys = self.get_objects()
-        self.logger.info("Initiating download process.")
+        objects = self.get_objects()
+        ignored, s3_objects = [], []
+        for obj in objects:
+            if obj.key.endswith("/"):
+                ignored.append(obj)
+            else:
+                s3_objects.append(obj)
+        self.logger.debug("Downloading objects (as files): %s", s3_objects)
+        self.logger.debug("Ignoring objects (as folders): %s", ignored)
+        self.logger.info(
+            "Initiating download process for %d files. Ignoring %d folders.",
+            len(s3_objects), len(ignored)
+        )
         with ThreadPoolExecutor(max_workers=threads) as executor:
-            list(tqdm(iterable=executor.map(self.downloader, keys),
-                      total=len(keys), desc=f"Downloading files from {self.bucket_name}",
-                      unit="files", leave=True))
+            list(tqdm(iterable=executor.map(self.downloader, s3_objects),
+                      total=len(s3_objects), desc=f"Downloading objects from {self.bucket_name}",
+                      unit="objects", leave=True))
         self.exit()
 
     def get_bucket_structure(self, raw: bool = False) -> Union[str, Dict[str, int]]:
