@@ -1,27 +1,24 @@
-
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>S3 Download &#8212; S3 Downloader  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
     <link rel="stylesheet" type="text/css" href="_static/static.css" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Welcome to S3 Downloader’s documentation!" href="index.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -60,18 +57,18 @@
 <p><a class="reference external" href="https://github.com/thevickypedia/s3-downloader/actions/workflows/python-publish.yml"><img alt="pypi-publish" src="https://github.com/thevickypedia/s3-downloader/actions/workflows/python-publish.yml/badge.svg" /></a>
 <a class="reference external" href="https://github.com/thevickypedia/s3-downloader/actions/workflows/pages/pages-build-deployment"><img alt="pages-build-deployment" src="https://github.com/thevickypedia/s3-downloader/actions/workflows/pages/pages-build-deployment/badge.svg" /></a></p>
 <section id="s3-download">
-<h1>S3 Download<a class="headerlink" href="#s3-download" title="Permalink to this heading">¶</a></h1>
+<h1>S3 Download<a class="headerlink" href="#s3-download" title="Link to this heading">¶</a></h1>
 <p>Python module to download objects in an S3 bucket.</p>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>s3-downloader
 </pre></div>
 </div>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
 <section id="download-objects-in-parallel">
-<h3>Download objects in parallel<a class="headerlink" href="#download-objects-in-parallel" title="Permalink to this heading">¶</a></h3>
+<h3>Download objects in parallel<a class="headerlink" href="#download-objects-in-parallel" title="Link to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">s3</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -81,7 +78,7 @@
 </div>
 </section>
 <section id="download-objects-in-sequence">
-<h3>Download objects in sequence<a class="headerlink" href="#download-objects-in-sequence" title="Permalink to this heading">¶</a></h3>
+<h3>Download objects in sequence<a class="headerlink" href="#download-objects-in-sequence" title="Link to this heading">¶</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">s3</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -91,13 +88,13 @@
 </div>
 </section>
 <section id="mandatory-arg">
-<h3>Mandatory arg<a class="headerlink" href="#mandatory-arg" title="Permalink to this heading">¶</a></h3>
+<h3>Mandatory arg<a class="headerlink" href="#mandatory-arg" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><strong>bucket_name</strong> - Name of the s3 bucket.</p></li>
 </ul>
 </section>
 <section id="optional-kwargs">
-<h3>Optional kwargs<a class="headerlink" href="#optional-kwargs" title="Permalink to this heading">¶</a></h3>
+<h3>Optional kwargs<a class="headerlink" href="#optional-kwargs" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><strong>prefix</strong> - Prefix to filter the objects based on their path. Defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
 <li><p><strong>logger</strong> - Bring your own custom pre-configured logger. Defaults to on-screen logging.</p></li>
@@ -115,14 +112,14 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">bucket_
 </section>
 </section>
 <section id="coding-standards">
-<h2>Coding Standards<a class="headerlink" href="#coding-standards" title="Permalink to this heading">¶</a></h2>
+<h2>Coding Standards<a class="headerlink" href="#coding-standards" title="Link to this heading">¶</a></h2>
 <p>Docstring format: <a class="reference external" href="https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings"><code class="docutils literal notranslate"><span class="pre">Google</span></code></a> <br>
 Styling conventions: <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/"><code class="docutils literal notranslate"><span class="pre">PEP</span> <span class="pre">8</span></code></a> <br>
 Clean code with pre-commit hooks: <a class="reference external" href="https://flake8.pycqa.org/en/latest/"><code class="docutils literal notranslate"><span class="pre">flake8</span></code></a> and
 <a class="reference external" href="https://pycqa.github.io/isort/"><code class="docutils literal notranslate"><span class="pre">isort</span></code></a></p>
 </section>
 <section id="release-notes">
-<h2><a class="reference external" href="https://github.com/thevickypedia/s3-downloader/blob/main/release_notes.rst">Release Notes</a><a class="headerlink" href="#release-notes" title="Permalink to this heading">¶</a></h2>
+<h2><a class="reference external" href="https://github.com/thevickypedia/s3-downloader/blob/main/release_notes.rst">Release Notes</a><a class="headerlink" href="#release-notes" title="Link to this heading">¶</a></h2>
 <p><strong>Requirement</strong></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>gitverse
 </pre></div>
@@ -133,7 +130,7 @@ Clean code with pre-commit hooks: <a class="reference external" href="https://fl
 </div>
 </section>
 <section id="linting">
-<h2>Linting<a class="headerlink" href="#linting" title="Permalink to this heading">¶</a></h2>
+<h2>Linting<a class="headerlink" href="#linting" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> will ensure linting, run pytest, generate runbook &amp; release notes, and validate hyperlinks in ALL
 markdown files (including Wiki pages)</p>
 <p><strong>Requirement</strong></p>
@@ -145,13 +142,13 @@ markdown files (including Wiki pages)</p>
 </pre></div>
 </div>
 <section id="pypi-package">
-<h3>Pypi Package<a class="headerlink" href="#pypi-package" title="Permalink to this heading">¶</a></h3>
+<h3>Pypi Package<a class="headerlink" href="#pypi-package" title="Link to this heading">¶</a></h3>
 <p><a class="reference external" href="https://packaging.python.org/tutorials/packaging-projects/"><img alt="pypi-module" src="https://img.shields.io/badge/Software%20Repository-pypi-1f425f.svg" /></a></p>
 <p><a class="reference external" href="https://pypi.org/project/s3-downloader/">https://pypi.org/project/s3-downloader/</a></p>
 </section>
 </section>
 <section id="license-copyright">
-<h2>License &amp; copyright<a class="headerlink" href="#license-copyright" title="Permalink to this heading">¶</a></h2>
+<h2>License &amp; copyright<a class="headerlink" href="#license-copyright" title="Link to this heading">¶</a></h2>
 <p>© Vignesh Rao</p>
 <p>Licensed under the <a class="reference external" href="https://github.com/thevickypedia/s3-downloader/blob/main/LICENSE">MIT License</a></p>
 </section>
@@ -162,7 +159,7 @@ markdown files (including Wiki pages)</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
@@ -200,7 +197,7 @@ markdown files (including Wiki pages)</p>
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -208,13 +205,13 @@ markdown files (including Wiki pages)</p>
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -231,8 +228,8 @@ markdown files (including Wiki pages)</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2024, Vignesh Rao.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.1.1.
+    &#169; Copyright 2024, Vignesh Rao.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     </div>
   </body>
 </html>

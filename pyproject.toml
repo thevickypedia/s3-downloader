@@ -14,9 +14,9 @@ classifiers = [
     "Topic :: Internet :: File Transfer Protocol (FTP)"
 ]
 dependencies = [
-    "boto3",
-    "alive-progress",
-    "click"
+    "boto3==1.42.*",
+    "alive-progress==3.3.*",
+    "click==8.3.*"
 ]
 keywords = ["s3"]
 requires-python = ">=3.8"
@@ -35,7 +35,7 @@ build-backend = "setuptools.build_meta"
 s3 = "s3:_cli"
 
 [project.optional-dependencies]
-dev = ["sphinx==5.1.1", "pre-commit", "recommonmark"]
+dev = ["sphinx", "pre-commit", "recommonmark"]
 
 [project.urls]
 Homepage        = "https://github.com/thevickypedia/s3-downloader"

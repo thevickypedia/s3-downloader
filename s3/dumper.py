@@ -186,7 +186,13 @@ class Downloader:
             self.logger.info("Downloading %s [%s] to %s", filename, size_converter(s3_object.size), target_path)
         self.bucket.download_file(source_file, target_file, Config=self.transfer_config, Callback=callback)
 
-    def get_uploadables(self) -> List[S3Object]:
+    def get_downloads(self) -> List[S3Object]:
+        """Filters out the objects that are not files and cannot be downloaded.
+
+        Returns:
+            List[S3Object]:
+            List of objects that can be downloaded.
+        """
         objects = self.get_objects()
         ignored, s3_objects = [], []
         for obj in objects:
@@ -204,7 +210,7 @@ class Downloader:
     def run(self) -> None:
         """Initiates bucket download in a traditional loop."""
         self.init()
-        s3_objects = self.get_uploadables()
+        s3_objects = self.get_downloads()
         with alive_bar(len(s3_objects), **self.alive_bar_kwargs) as overall_bar:
             for s3_object in s3_objects:
                 progress_callback = ProgressPercentage(
@@ -230,7 +236,7 @@ class Downloader:
         """
         self.init()
         self.logger.info(f"Number of threads: {threads}")
-        s3_objects = self.get_uploadables()
+        s3_objects = self.get_downloads()
         with alive_bar(len(s3_objects), **self.alive_bar_kwargs) as overall_bar:
             with ThreadPoolExecutor(max_workers=threads) as executor:
                 futures = {}
