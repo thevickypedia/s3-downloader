@@ -4,9 +4,10 @@ import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import boto3
+from boto3.s3.transfer import TransferConfig
 from botocore.config import Config
 from tqdm import tqdm
 
@@ -29,25 +30,35 @@ class Downloader:
 
     """
 
-    # TODO: Make these customizable
     # noinspection PyTypeChecker
     RETRY_CONFIG: Config = Config(
         retries={
             "max_attempts": 10,
             "mode": "standard"
         },
-        max_pool_connections=128  # Optimal for 64 threads
+        connect_timeout=60,
+        read_timeout=90,
+    )
+
+    TRANSFER_CONFIG: TransferConfig = TransferConfig(
+        max_concurrency=10,
+        num_download_attempts=10,
+        multipart_threshold=1024 * 8,  # 8MB
+        multipart_chunksize=1024 * 8,  # 8MB
+        use_threads=True
     )
 
     def __init__(self, bucket_name: str,
-                 download_dir: str = None,
-                 region_name: str = None,
-                 profile_name: str = None,
-                 aws_access_key_id: str = None,
-                 aws_secret_access_key: str = None,
-                 logger: logging.Logger = None,
-                 log_type: LogType = LogType.stdout,
-                 prefix: Union[str, List[str]] = None):
+                 download_dir: Optional[str] = None,
+                 region_name: Optional[str] = None,
+                 profile_name: Optional[str] = None,
+                 aws_access_key_id: Optional[str] = None,
+                 aws_secret_access_key: Optional[str] = None,
+                 logger: Optional[logging.Logger] = None,
+                 log_type: Optional[LogType] = LogType.stdout,
+                 prefix: Optional[Union[str, List[str]]] = None,
+                 retry_config: Optional[Config] = RETRY_CONFIG,
+                 transfer_config: Optional[TransferConfig] = TRANSFER_CONFIG):
         """Initiates all the necessary args and creates a boto3 session with retry logic.
 
         Args:
@@ -60,6 +71,8 @@ class Downloader:
             logger: Bring your own logger.
             log_type: Type of logging output. Defaults to stdout.
             prefix: Specific path [OR] list of paths from which the objects have to be downloaded.
+            retry_config: Custom retry configuration for boto3 client. Defaults to RETRY_CONFIG.
+            transfer_config: Custom transfer configuration for boto3 client. Defaults to TRANSFER_CONFIG.
         """
         self.session = boto3.Session(
             profile_name=profile_name or os.environ.get("PROFILE_NAME"),
@@ -67,9 +80,11 @@ class Downloader:
             aws_access_key_id=aws_access_key_id or os.environ.get("AWS_ACCESS_KEY_ID"),
             aws_secret_access_key=aws_secret_access_key or os.environ.get("AWS_SECRET_ACCESS_KEY")
         )
-        self.s3 = self.session.resource(service_name="s3", config=self.RETRY_CONFIG)
+        self.s3 = self.session.resource(service_name="s3", config=retry_config)
+        self.transfer_config = transfer_config
         self.no_filename = []
         self.logger = logger or default_logger(log_type)
+        self.file_logger = log_type == LogType.file
         self.download_dir = download_dir or bucket_name
         self.bucket_name = bucket_name
         self.bucket = None
@@ -160,9 +175,15 @@ class Downloader:
             pass
         target_file = os.path.join(target_path, filename)
         if os.path.isfile(target_file) and os.path.getsize(target_file) == s3_object.size:
-            self.logger.info("%s already exists and is of the same size. Skipping download.", target_file)
+            if self.file_logger:
+                self.logger.info(
+                    "%s already exists and is of the same size [%s], skipping download.",
+                    target_file, size_converter(s3_object.size)
+                )
             return
-        self.bucket.download_file(source_file, target_file)
+        if self.file_logger:
+            self.logger.info("Downloading %s [%s] to %s", filename, size_converter(s3_object.size), target_path)
+        self.bucket.download_file(source_file, target_file, Config=self.transfer_config)
 
     def run(self) -> None:
         """Initiates bucket download in a traditional loop."""
@@ -170,8 +191,13 @@ class Downloader:
         keys = self.get_objects()
         self.logger.debug(keys)
         self.logger.info("Initiating download process.")
-        for s3_object in tqdm(keys, total=len(keys), unit="file", leave=True,
-                         desc=f"Downloading files from {self.bucket_name}"):
+        for s3_object in tqdm(
+                keys,
+                total=len(keys),
+                unit="file",
+                leave=True,
+                desc=f"Downloading files from {self.bucket_name}"
+        ):
             self.downloader(s3_object=s3_object)
         self.exit()
 
