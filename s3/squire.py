@@ -38,6 +38,8 @@ def size_converter(byte_size: Union[int, float]) -> str:
         str:
         Converted human understandable size.
     """
+    if byte_size == 0:
+        return "0 B"
     size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
     integer = int(math.floor(math.log(byte_size, 1024)))
     size = round(byte_size / pow(1024, integer), 2)

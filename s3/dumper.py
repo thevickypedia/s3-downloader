@@ -29,12 +29,14 @@ class Downloader:
 
     """
 
+    # TODO: Make these customizable
     # noinspection PyTypeChecker
     RETRY_CONFIG: Config = Config(
         retries={
             "max_attempts": 10,
             "mode": "standard"
-        }
+        },
+        max_pool_connections=128  # Optimal for 64 threads
     )
 
     def __init__(self, bucket_name: str,

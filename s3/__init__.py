@@ -1,3 +1,4 @@
+import sys
 from typing import Optional
 
 import click
@@ -57,6 +58,9 @@ def _cli(
         assert isinstance(workers, int) and workers > 0, "Workers must be a positive integer."
     prefix_list = [p.strip() for p in prefix.split(",")] if prefix else None
     downloader = Downloader(bucket_name=bucket, download_dir=destination, prefix=prefix_list, log_type=LogType(log))
+    entrypoint = f"Entrypoint: s3 {' '.join(sys.argv[1:])}"
+    downloader.logger.info(entrypoint)
+    click.secho(entrypoint, fg='green')
     if workers:
         downloader.run_in_parallel(threads=workers)
     else:
