@@ -11,7 +11,7 @@ from botocore.config import Config
 from tqdm import tqdm
 
 from s3.exceptions import BucketNotFound, InvalidPrefix, NoObjectFound
-from s3.logger import default_logger
+from s3.logger import LogType, default_logger
 from s3.squire import (convert_to_folder_structure, refine_prefix,
                        size_converter)
 
@@ -44,6 +44,7 @@ class Downloader:
                  aws_access_key_id: str = None,
                  aws_secret_access_key: str = None,
                  logger: logging.Logger = None,
+                 log_type: LogType = LogType.stdout,
                  prefix: Union[str, List[str]] = None):
         """Initiates all the necessary args and creates a boto3 session with retry logic.
 
@@ -55,6 +56,7 @@ class Downloader:
             aws_access_key_id: AWS access key ID.
             aws_secret_access_key: AWS secret access key.
             logger: Bring your own logger.
+            log_type: Type of logging output. Defaults to stdout.
             prefix: Specific path [OR] list of paths from which the objects have to be downloaded.
         """
         self.session = boto3.Session(
@@ -65,7 +67,7 @@ class Downloader:
         )
         self.s3 = self.session.resource(service_name="s3", config=self.RETRY_CONFIG)
         self.no_filename = []
-        self.logger = logger or default_logger()
+        self.logger = logger or default_logger(log_type)
         self.download_dir = download_dir or bucket_name
         self.bucket_name = bucket_name
         self.bucket = None
@@ -186,7 +188,6 @@ class Downloader:
                 ignored.append(obj)
             else:
                 s3_objects.append(obj)
-        self.logger.debug("Downloading objects (as files): %s", s3_objects)
         self.logger.debug("Ignoring objects (as folders): %s", ignored)
         self.logger.info(
             "Initiating download process for %d files. Ignoring %d folders.",

@@ -3,6 +3,7 @@ from typing import Optional
 import click
 
 from s3.dumper import Downloader  # noqa: F401
+from s3.logger import LogType
 
 version = "1.0.1"
 
@@ -34,7 +35,20 @@ version = "1.0.1"
     required=False,
     help="Number of workers to use for downloading files concurrently.",
 )
-def _cli(*args, bucket: str, destination: str, prefix: Optional[str], workers: Optional[str] = None):
+@click.option(
+    "-l",
+    "--log",
+    required=False,
+    help="Number of workers to use for downloading files concurrently.",
+)
+def _cli(
+        *args,
+        bucket: str,
+        destination: str,
+        prefix: Optional[str],
+        workers: Optional[str] = None,
+        log: Optional[LogType] = LogType.stdout
+):
     """Command-line interface for the s3-downloader module."""
     assert bucket, "Bucket name is required."
     if workers:
@@ -42,7 +56,7 @@ def _cli(*args, bucket: str, destination: str, prefix: Optional[str], workers: O
         workers = int(workers)
         assert isinstance(workers, int) and workers > 0, "Workers must be a positive integer."
     prefix_list = [p.strip() for p in prefix.split(",")] if prefix else None
-    downloader = Downloader(bucket_name=bucket, download_dir=destination, prefix=prefix_list)
+    downloader = Downloader(bucket_name=bucket, download_dir=destination, prefix=prefix_list, log_type=LogType(log))
     if workers:
         downloader.run_in_parallel(threads=workers)
     else:
