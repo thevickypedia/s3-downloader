@@ -4,7 +4,7 @@ import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 import boto3
 from boto3.s3.transfer import TransferConfig
@@ -13,8 +13,8 @@ from tqdm import tqdm
 
 from s3.exceptions import BucketNotFound, InvalidPrefix, NoObjectFound
 from s3.logger import LogType, default_logger
-from s3.squire import (convert_to_folder_structure, refine_prefix,
-                       size_converter)
+from s3.squire import (convert_to_folder_structure, format_bucket_structure,
+                       refine_prefix, size_converter)
 
 
 @dataclass
@@ -22,6 +22,7 @@ class S3Object:
     """Represents an S3 object with its key and size."""
     key: str
     size: int
+
 
 class Downloader:
     """Initiates Downloader object to download an entire S3 bucket.
@@ -249,80 +250,10 @@ class Downloader:
             convert_size: Whether to convert the size into human-readable format or not.
         """
         assert filename.endswith(".json"), "Filename must end with .json"
-        tree = {}
-        # Iterate over key + size
-        for key, size in self.get_bucket_structure(raw=True).items():
-            parts = key.strip("/").split("/")
-            current = tree
-
-            for part in parts[:-1]:
-                current = current.setdefault(part, {})
-
-            # Add file with size
-            current.setdefault("__files__", []).append({
-                "name": parts[-1],
-                "size": size
-            })
-
-        def clean(node: Dict[str, Any]) -> Dict[str, Any]:
-            """Recursively clean the tree structure and calculate folder sizes.
-
-            Args:
-                node: Each node in the tree structure.
-
-            Returns:
-                Dict[str, Any]:
-                Cleaned node with separate "files" key for files and other keys for folders.
-            """
-            result = {}
-            total_size = 0
-
-            # Process files
-            files = node.get("__files__", [])
-            if files:
-                result["files"] = sorted(files, key=lambda x: x["name"])
-                total_size += sum(file_["size"] for file_ in files)
-
-            # Process subfolders
-            for k, v in node.items():
-                if k == "__files__":
-                    continue
-                cleaned_subfolder = clean(v)
-                result[k] = cleaned_subfolder
-                total_size += cleaned_subfolder.get("size", 0)
-
-            # Add folder size
-            result["size"] = total_size
-
-            return result
-
-        def size_it(node: Dict[str, Any]) -> Dict[str, Any]:
-            """Recursively convert sizes in the tree structure to human-readable format.
-
-            Args:
-                node: Each node in the tree structure.
-
-            Returns:
-                Dict[str, Any]:
-                Node with sizes converted to human-readable format.
-            """
-            if "size" in node:
-                node["size"] = size_converter(node["size"])
-            for k, v in node.items():
-                if isinstance(v, dict):
-                    size_it(v)
-                elif isinstance(v, list):
-                    for item in v:
-                        if isinstance(item, dict) and "size" in item:
-                            item["size"] = size_converter(item["size"])
-            return node
-
-        json_structure = clean(tree)
-        sized_structure = size_it(json_structure) if convert_size else json_structure
-
-        with open(filename, "w") as f:
-            json.dump(sized_structure, f, indent=2)
-
+        bucket_structure = self.get_bucket_structure(raw=True)
+        json_structure = format_bucket_structure(bucket_structure, convert_size=convert_size)
+        with open(filename, "w") as file:
+            json.dump(json_structure, file, indent=2)
         self.logger.info("%s created successfully.", filename)
 
     def print_bucket_structure(self) -> None:

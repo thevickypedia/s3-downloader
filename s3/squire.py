@@ -1,6 +1,6 @@
 import math
 from collections.abc import Generator
-from typing import Dict, List, Union
+from typing import Any, Dict, List, Union
 
 
 def refine_prefix(prefix: Union[str, List[str]] = None) -> Generator[str]:
@@ -102,3 +102,86 @@ def convert_to_folder_structure(sequence: Dict[str, int]) -> str:
 
     final_output_, total_size_ = generate_folder_structure(folder_structure)
     return f". ({size_converter(total_size_)})\n" + final_output_
+
+
+def format_bucket_structure(bucket_structure: Dict[str, int], convert_size: bool) -> Dict[str, Any]:
+    """Formats the bucket structure into a human-readable string.
+
+    Args:
+        bucket_structure: A dictionary where keys are S3 object keys (paths) and values are their sizes in bytes.
+        convert_size: A boolean indicating whether to convert sizes to human-readable format.
+
+    Returns:
+        Dict[str, Any]:
+        A dictionary representing the folder structure of the S3 bucket, with each file and folder showing the size.
+    """
+    tree = {}
+    # Iterate over key + size
+    for key, size in bucket_structure.items():
+        parts = key.strip("/").split("/")
+        current = tree
+
+        for part in parts[:-1]:
+            current = current.setdefault(part, {})
+
+        # Add file with size
+        current.setdefault("__files__", []).append({
+            "name": parts[-1],
+            "size": size
+        })
+
+    def clean(node: Dict[str, Any]) -> Dict[str, Any]:
+        """Recursively clean the tree structure and calculate folder sizes.
+
+        Args:
+            node: Each node in the tree structure.
+
+        Returns:
+            Dict[str, Any]:
+            Cleaned node with separate "files" key for files and other keys for folders.
+        """
+        result = {}
+        total_size = 0
+
+        # Process files
+        files = node.get("__files__", [])
+        if files:
+            result["files"] = sorted(files, key=lambda x: x["name"])
+            total_size += sum(file_["size"] for file_ in files)
+
+        # Process subfolders
+        for k, v in node.items():
+            if k == "__files__":
+                continue
+            cleaned_subfolder = clean(v)
+            result[k] = cleaned_subfolder
+            total_size += cleaned_subfolder.get("size", 0)
+
+        # Add folder size
+        result["size"] = total_size
+
+        return result
+
+    def size_it(node: Dict[str, Any]) -> Dict[str, Any]:
+        """Recursively convert sizes in the tree structure to human-readable format.
+
+        Args:
+            node: Each node in the tree structure.
+
+        Returns:
+            Dict[str, Any]:
+            Node with sizes converted to human-readable format.
+        """
+        if "size" in node:
+            node["size"] = size_converter(node["size"])
+        for k, v in node.items():
+            if isinstance(v, dict):
+                size_it(v)
+            elif isinstance(v, list):
+                for item in v:
+                    if isinstance(item, dict) and "size" in item:
+                        item["size"] = size_converter(item["size"])
+        return node
+
+    json_structure = clean(tree)
+    return size_it(json_structure) if convert_size else json_structure
