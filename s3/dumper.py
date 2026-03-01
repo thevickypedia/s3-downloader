@@ -3,7 +3,7 @@ import logging
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any, Dict, List, Set, Union
+from typing import Any, Dict, List, Union
 
 import boto3
 from botocore.config import Config
@@ -11,7 +11,8 @@ from tqdm import tqdm
 
 from s3.exceptions import BucketNotFound, InvalidPrefix, NoObjectFound
 from s3.logger import default_logger
-from s3.squire import convert_to_folder_structure, size_converter
+from s3.squire import (convert_to_folder_structure, refine_prefix,
+                       size_converter)
 
 
 class Downloader:
@@ -21,6 +22,7 @@ class Downloader:
 
     """
 
+    # noinspection PyTypeChecker
     RETRY_CONFIG: Config = Config(
         retries={
             "max_attempts": 10,
@@ -35,7 +37,7 @@ class Downloader:
                  aws_access_key_id: str = None,
                  aws_secret_access_key: str = None,
                  logger: logging.Logger = None,
-                 prefix: str = None):
+                 prefix: Union[str, List[str]] = None):
         """Initiates all the necessary args and creates a boto3 session with retry logic.
 
         Args:
@@ -46,7 +48,7 @@ class Downloader:
             aws_access_key_id: AWS access key ID.
             aws_secret_access_key: AWS secret access key.
             logger: Bring your own logger.
-            prefix: Specific path from which the objects have to be downloaded.
+            prefix: Specific path [OR] list of paths from which the objects have to be downloaded.
         """
         self.session = boto3.Session(
             profile_name=profile_name or os.environ.get("PROFILE_NAME"),
@@ -60,12 +62,7 @@ class Downloader:
         self.download_dir = download_dir or bucket_name
         self.bucket_name = bucket_name
         self.bucket = None
-        if prefix and prefix.endswith("/"):
-            self.prefix = prefix
-        elif prefix:
-            self.prefix = f"{prefix}/"
-        else:
-            self.prefix = None
+        self.prefix_list = list(refine_prefix(prefix)) if prefix else None
         self.start_time = time.time()
 
     def init(self) -> None:
@@ -109,19 +106,16 @@ class Downloader:
             list:
             List of objects in the bucket.
         """
-        if self.prefix:
-            objects = [obj.key for obj in self.bucket.objects.filter(Prefix=self.prefix)]
-            if not objects:
-                available = {}
-                for obj in self.bucket.objects.all():
-                    paths = obj.key.split('/')
-                    if len(paths) > 1:  # folder like hierarchy
-                        available['/'.join(paths[0:-1])] = obj.size
-                if available:  # this means hierarchical structure is present but just not with the same condition
-                    raise InvalidPrefix(self.prefix, self.bucket_name, available)
-            self.logger.info(
-                f"Nuber of objects found in {self.bucket_name} limited to {self.prefix!r}: {len(objects)}"
-            )
+        if self.prefix_list:
+            objects = []
+            for prefix in self.prefix_list:
+                if prefixed_objects := [obj.key for obj in self.bucket.objects.filter(Prefix=prefix)]:
+                    objects.extend(prefixed_objects)
+                    self.logger.info(
+                        f"Nuber of objects found in {self.bucket_name} limited to {prefix!r}: {len(objects)}"
+                    )
+                else:
+                    raise InvalidPrefix(prefix, self.bucket_name)
         else:
             objects = [obj.key for obj in self.bucket.objects.all()]
             self.logger.info(f"Nuber of objects found in {self.bucket_name}: {len(objects)}")
@@ -232,7 +226,7 @@ class Downloader:
             files = node.get("__files__", [])
             if files:
                 result["files"] = sorted(files, key=lambda x: x["name"])
-                total_size += sum(f["size"] for f in files)
+                total_size += sum(file_["size"] for file_ in files)
 
             # Process subfolders
             for k, v in node.items():
@@ -246,7 +240,6 @@ class Downloader:
             result["size"] = total_size
 
             return result
-
 
         def size_it(node: Dict[str, Any]) -> Dict[str, Any]:
             """Recursively convert sizes in the tree structure to human-readable format.

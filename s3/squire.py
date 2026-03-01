@@ -1,5 +1,31 @@
 import math
-from typing import Dict, Union
+from collections.abc import Generator
+from typing import Dict, List, Union
+
+
+def refine_prefix(prefix: Union[str, List[str]] = None) -> Generator[str]:
+    """Refines the prefix input to ensure it is a list of strings.
+
+    Args:
+        prefix: A string or a list of strings representing the prefix(es) to filter S3 objects.
+
+    Yields:
+        str:
+        Yields strings representing the refined prefix(es).
+    """
+    if isinstance(prefix, str):
+        if prefix.endswith("/"):
+            yield prefix
+        yield f"{prefix}/"
+    elif isinstance(prefix, list) and all(isinstance(p, str) for p in prefix):
+        for p in prefix:
+            if p.endswith("/"):
+                yield p
+            else:
+                yield f"{p}/"
+    else:
+        raise ValueError("Prefix must be a string or a list of strings.")
+
 
 
 def size_converter(byte_size: Union[int, float]) -> str:
