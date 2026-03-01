@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [{ name = "Vignesh Rao", email = "svignesh1793@gmail.com" }]
 license = { file = "LICENSE" }
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Information Technology",
     "Operating System :: OS Independent",
     "License :: OSI Approved :: MIT License",
