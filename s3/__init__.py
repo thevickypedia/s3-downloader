@@ -47,12 +47,15 @@ def _cli(
         bucket: str,
         destination: str,
         prefix: Optional[str],
-        workers: Optional[str] = None,
+        workers: Optional[str],
         log: Optional[LogType] = LogType.stdout
 ):
     """Command-line interface for the s3-downloader module."""
     assert bucket, "Bucket name is required."
     if workers:
+        # All inputs are strings from CLI
+        assert isinstance(workers, str), "Workers must be a string representing a positive integer."
+        workers = workers.strip()
         assert workers.isdigit(), "Workers must be a positive integer."
         workers = int(workers)
         assert isinstance(workers, int) and workers > 0, "Workers must be a positive integer."

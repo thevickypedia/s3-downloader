@@ -64,7 +64,7 @@
 <span id="main-module"></span><h1>Main Module<a class="headerlink" href="#module-s3.dumper" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="s3.dumper.Downloader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.dumper.</span></span><span class="sig-name descname"><span class="pre">Downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger:</span> <span class="pre">~logging.Logger</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_type:</span> <span class="pre">~s3.logger.LogType</span> <span class="pre">=</span> <span class="pre">LogType.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_config:</span> <span class="pre">~botocore.config.Config</span> <span class="pre">=</span> <span class="pre">&lt;botocore.config.Config</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_config:</span> <span class="pre">~boto3.s3.transfer.TransferConfig</span> <span class="pre">=</span> <span class="pre">&lt;boto3.s3.transfer.TransferConfig</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.dumper.Downloader" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.dumper.</span></span><span class="sig-name descname"><span class="pre">Downloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bucket_name:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_name:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_access_key_id:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aws_secret_access_key:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger:</span> <span class="pre">~logging.Logger</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_type:</span> <span class="pre">~s3.logger.LogType</span> <span class="pre">=</span> <span class="pre">LogType.stdout</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort:</span> <span class="pre">~s3.squire.Sort</span> <span class="pre">=</span> <span class="pre">Sort.no_sort</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~typing.List[str]</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retry_config:</span> <span class="pre">~botocore.config.Config</span> <span class="pre">=</span> <span class="pre">&lt;botocore.config.Config</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer_config:</span> <span class="pre">~boto3.s3.transfer.TransferConfig</span> <span class="pre">=</span> <span class="pre">&lt;boto3.s3.transfer.TransferConfig</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.dumper.Downloader" title="Link to this definition">¶</a></dt>
 <dd><p>Initiates Downloader object to download an entire S3 bucket.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Downloader</span>
 </pre></div>
@@ -81,12 +81,21 @@
 <li><p><strong>aws_secret_access_key</strong> – AWS secret access key.</p></li>
 <li><p><strong>logger</strong> – Bring your own logger.</p></li>
 <li><p><strong>log_type</strong> – Type of logging output. Defaults to stdout.</p></li>
+<li><p><strong>sort</strong> – Sorting options for the files to be downloaded. Defaults to no_sort.</p></li>
 <li><p><strong>prefix</strong> – Specific path [OR] list of paths from which the objects have to be downloaded.</p></li>
 <li><p><strong>retry_config</strong> – Custom retry configuration for boto3 client. Defaults to RETRY_CONFIG.</p></li>
 <li><p><strong>transfer_config</strong> – Custom transfer configuration for boto3 client. Defaults to TRANSFER_CONFIG.</p></li>
 </ul>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul class="simple">
+<li><p>The default <code class="docutils literal notranslate"><span class="pre">sort</span></code> option is <code class="docutils literal notranslate"><span class="pre">no_sort</span></code> which uses the default lexicographical order by object key.</p></li>
+<li><p>Bucket objects are fetched using <code class="docutils literal notranslate"><span class="pre">bucket.objects.all()</span></code> which is paginated under the hood.</p></li>
+<li><p>Sorting will pull everything into memory. This may be expensive for very large buckets.</p></li>
+</ul>
+</div>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="s3.dumper.Downloader.RETRY_CONFIG">
 <span class="sig-name descname"><span class="pre">RETRY_CONFIG</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Config</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;botocore.config.Config</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#s3.dumper.Downloader.RETRY_CONFIG" title="Link to this definition">¶</a></dt>
@@ -403,6 +412,50 @@
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="s3.squire.Sort">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">s3.squire.</span></span><span class="sig-name descname"><span class="pre">Sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#s3.squire.Sort" title="Link to this definition">¶</a></dt>
+<dd><p>Enum to represent sorting options for S3 objects.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Sort</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.Sort.size">
+<span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'size'</span></em><a class="headerlink" href="#s3.squire.Sort.size" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.Sort.size_desc">
+<span class="sig-name descname"><span class="pre">size_desc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'size_desc'</span></em><a class="headerlink" href="#s3.squire.Sort.size_desc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.Sort.key">
+<span class="sig-name descname"><span class="pre">key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'key'</span></em><a class="headerlink" href="#s3.squire.Sort.key" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.Sort.key_desc">
+<span class="sig-name descname"><span class="pre">key_desc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'key_desc'</span></em><a class="headerlink" href="#s3.squire.Sort.key_desc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.Sort.last_modified">
+<span class="sig-name descname"><span class="pre">last_modified</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'last_modified'</span></em><a class="headerlink" href="#s3.squire.Sort.last_modified" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.Sort.last_modified_desc">
+<span class="sig-name descname"><span class="pre">last_modified_desc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'last_modified_desc'</span></em><a class="headerlink" href="#s3.squire.Sort.last_modified_desc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="s3.squire.Sort.no_sort">
+<span class="sig-name descname"><span class="pre">no_sort</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'no_sort'</span></em><a class="headerlink" href="#s3.squire.Sort.no_sort" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-s3.logger">
 <span id="logger"></span><h1>Logger<a class="headerlink" href="#module-s3.logger" title="Link to this heading">¶</a></h1>
@@ -545,6 +598,16 @@
 <li><a class="reference internal" href="#s3.squire.DownloadResults.success"><code class="docutils literal notranslate"><span class="pre">DownloadResults.success</span></code></a></li>
 <li><a class="reference internal" href="#s3.squire.DownloadResults.failed"><code class="docutils literal notranslate"><span class="pre">DownloadResults.failed</span></code></a></li>
 <li><a class="reference internal" href="#s3.squire.DownloadResults.skipped"><code class="docutils literal notranslate"><span class="pre">DownloadResults.skipped</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#s3.squire.Sort"><code class="docutils literal notranslate"><span class="pre">Sort</span></code></a><ul>
+<li><a class="reference internal" href="#s3.squire.Sort.size"><code class="docutils literal notranslate"><span class="pre">Sort.size</span></code></a></li>
+<li><a class="reference internal" href="#s3.squire.Sort.size_desc"><code class="docutils literal notranslate"><span class="pre">Sort.size_desc</span></code></a></li>
+<li><a class="reference internal" href="#s3.squire.Sort.key"><code class="docutils literal notranslate"><span class="pre">Sort.key</span></code></a></li>
+<li><a class="reference internal" href="#s3.squire.Sort.key_desc"><code class="docutils literal notranslate"><span class="pre">Sort.key_desc</span></code></a></li>
+<li><a class="reference internal" href="#s3.squire.Sort.last_modified"><code class="docutils literal notranslate"><span class="pre">Sort.last_modified</span></code></a></li>
+<li><a class="reference internal" href="#s3.squire.Sort.last_modified_desc"><code class="docutils literal notranslate"><span class="pre">Sort.last_modified_desc</span></code></a></li>
+<li><a class="reference internal" href="#s3.squire.Sort.no_sort"><code class="docutils literal notranslate"><span class="pre">Sort.no_sort</span></code></a></li>
 </ul>
 </li>
 </ul>

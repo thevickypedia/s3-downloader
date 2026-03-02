@@ -1,6 +1,7 @@
 import math
 from collections.abc import Generator
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any, Dict, List, Union
 
 
@@ -206,3 +207,19 @@ class DownloadResults(dict):
     success: int = 0
     failed: int = 0
     skipped: int = 0
+
+
+class Sort(Enum):
+    """Enum to represent sorting options for S3 objects.
+
+    >>> Sort
+
+    """
+
+    size: str = "size"
+    size_desc: str = "size_desc"
+    key: str = "key"
+    key_desc: str = "key_desc"
+    last_modified: str = "last_modified"
+    last_modified_desc: str = "last_modified_desc"
+    no_sort: str = "no_sort"

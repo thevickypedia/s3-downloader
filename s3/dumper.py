@@ -13,8 +13,9 @@ from botocore.config import Config
 from s3.exceptions import BucketNotFound, InvalidPrefix, NoObjectFound
 from s3.logger import LogType, default_logger
 from s3.progress import ProgressPercentage
-from s3.squire import (DownloadResults, S3Object, convert_to_folder_structure,
-                       format_bucket_structure, refine_prefix, size_converter)
+from s3.squire import (DownloadResults, S3Object, Sort,
+                       convert_to_folder_structure, format_bucket_structure,
+                       refine_prefix, size_converter)
 
 
 class Downloader:
@@ -50,6 +51,7 @@ class Downloader:
                  aws_secret_access_key: str = None,
                  logger: logging.Logger = None,
                  log_type: LogType = LogType.stdout,
+                 sort: Sort = Sort.no_sort,
                  prefix: Union[str, List[str]] = None,
                  retry_config: Config = RETRY_CONFIG,
                  transfer_config: TransferConfig = TRANSFER_CONFIG):
@@ -64,9 +66,15 @@ class Downloader:
             aws_secret_access_key: AWS secret access key.
             logger: Bring your own logger.
             log_type: Type of logging output. Defaults to stdout.
+            sort: Sorting options for the files to be downloaded. Defaults to no_sort.
             prefix: Specific path [OR] list of paths from which the objects have to be downloaded.
             retry_config: Custom retry configuration for boto3 client. Defaults to RETRY_CONFIG.
             transfer_config: Custom transfer configuration for boto3 client. Defaults to TRANSFER_CONFIG.
+
+        Warnings:
+            - The default ``sort`` option is ``no_sort`` which uses the default lexicographical order by object key.
+            - Bucket objects are fetched using ``bucket.objects.all()`` which is paginated under the hood.
+            - Sorting will pull everything into memory. This may be expensive for very large buckets.
         """
         self.session = boto3.Session(
             profile_name=profile_name or os.environ.get("PROFILE_NAME"),
@@ -82,6 +90,7 @@ class Downloader:
         self.download_dir = download_dir or bucket_name
         self.bucket_name = bucket_name
         self.bucket = None
+        self.sort = Sort(sort)
         self.prefix_list = list(refine_prefix(prefix)) if prefix else None
         self.start_time = time.time()
         self.results = DownloadResults()
@@ -195,10 +204,17 @@ class Downloader:
             List[S3Object]:
             List of objects that can be downloaded.
         """
-        # TODO: Add sorting options
-        #  Sort objects by size
-        # objects = [obj for obj in sorted(self.get_objects(), key=lambda x: x.size, reverse=True)]
-        objects = self.get_objects()
+        if self.sort == Sort.size:
+            objects = [obj for obj in sorted(self.get_objects(), key=lambda x: x.size)]
+        elif self.sort == Sort.size_desc:
+            objects = [obj for obj in sorted(self.get_objects(), key=lambda x: x.size, reverse=True)]
+        elif self.sort == Sort.key:
+            objects = [obj for obj in sorted(self.get_objects(), key=lambda x: x.key)]
+        elif self.sort == Sort.key_desc:
+            objects = [obj for obj in sorted(self.get_objects(), key=lambda x: x.key, reverse=True)]
+        else:
+            assert self.sort == Sort.no_sort, f"Invalid sort option: {self.sort!r}"
+            objects = self.get_objects()
         ignored, s3_objects = [], []
         for obj in objects:
             if obj.key.endswith("/"):
